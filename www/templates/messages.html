@@ -1,0 +1,19 @@
+
+<ion-view view-title="Messages">
+
+    <ion-content>
+        <div class="list">
+        	<a class="item item-avatar" href="" ng-repeat="message in messages">
+        		<img src="img/noavatar.png">
+        		<h2 style="font-weight:bold;">{{message.name}}</h2>
+        		<p>{{message.message}}</p>
+        		<p style="font-size:10px">{{message.date}}</p>
+        	</a>
+        </div>
+    </ion-content>
+
+    <ion-nav-buttons side="right">
+        <button class="button icon ion-navicon-round" ng-click="openPopover($event)"></button>
+    </ion-nav-buttons>
+
+</ion-view>

@@ -1,0 +1,19 @@
+
+<ion-view title="Contacts">
+
+  <ion-content>
+    <div class="list">
+      <a class="item item-avatar" href="" ng-repeat="contact in contacts">
+        <img src="img/noavatar.png">
+        <h2 style="font-weight:bold;">{{contact.name}}</h2>
+        <p>{{contact.status}}</p>
+      </a>
+    </div>
+  </ion-content>
+
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-navicon-round" ng-click="openPopover($event)">
+    </button>
+  </ion-nav-buttons>
+
+</ion-view>
