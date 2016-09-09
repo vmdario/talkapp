@@ -3,9 +3,9 @@
 
   <ion-content>
     <div class="list">
-      <a class="item item-avatar" href="" ng-repeat="contact in contacts">
+      <a class="item item-avatar" href="" ng-repeat="contact in contacts | orderBy:'name'">
         <img src="img/noavatar.png">
-        <h2 style="font-weight:bold;">{{contact.name}}</h2>
+        <h2 class="contact-name">{{contact.name}}</h2>
         <p>{{contact.status}}</p>
       </a>
     </div>

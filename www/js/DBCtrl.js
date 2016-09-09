@@ -74,6 +74,7 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 
     $ionicPlatform.ready(function () {
 
+        console.log(window.sqlitePlugin);
         if (window.cordova) {
             db = $cordovaSQLite.openDB("my.db");
             $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS messages (id integer primary key, firstname varchar(10), lastname varchar(10), avatar text, message text)");

@@ -1,1 +1,10 @@
 /* Empty. Add your own CSS if you like */
+
+h2.contact-name {
+	font-weight: bold;
+}
+
+p.message-date {
+	font-size: 10px;
+	color: rgb(150,150,150);
+}

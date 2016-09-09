@@ -1,6 +1,6 @@
 
 angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
-.controller('MessagesTabCtrl', function ($scope, NavPopover, MessagesFactory) {
+.controller('MessagesTabCtrl', function ($scope, $state, NavPopover, MessagesFactory) {
 
     $scope.openPopover = function (evt) {
         NavPopover.open(evt);
@@ -14,4 +14,10 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
     	{name: "Julia", message: "This is not boringg", date: new Date("June 2, 2015 04:33:40").toUTCString()},
     	{name: "João", message: "#Party!", date: new Date().toUTCString()}
     ];
+
+    $scope.showMessageDetails = function (event) {
+        console.log(event);
+        
+        $state.go('message-detail', {contactId: 13});
+    }
 });
