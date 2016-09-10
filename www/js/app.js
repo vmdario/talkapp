@@ -44,7 +44,7 @@ angular.module('app', ['ionic', 'app.tabs.messages', 'app.tabs.contacts', 'app.m
 	$urlRouterProvider.otherwise("/tab/messages");
 })
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, DBService) {
 
 	$ionicPlatform.onHardwareBackButton(function () {
 		$ionicPlatform.exitApp();
@@ -67,5 +67,13 @@ angular.module('app', ['ionic', 'app.tabs.messages', 'app.tabs.contacts', 'app.m
 			StatusBar.styleDefault();
 		}
 
+		// initializing sqlite
+		var db = DBService.init('talkapp.db');
+		console.log(db);
+
+		DBService.insert('msg', [1, 'This is my message']);
+		DBService.insert('msg', [2, 'Thiessage']);
+		DBService.insert('msg', [3, 'This is mysage']);
+		DBService.insert('msg', [4, 'Thage']);
 	});
 })
