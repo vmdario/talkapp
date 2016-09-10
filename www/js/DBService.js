@@ -6,6 +6,7 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 	var db = null;
 
 	this.init = function (name) {
+
 		if (window.cordova) {
 			db = $cordovaSQLite.openDB({name: name, location: 'default'});
 		} else {
@@ -13,38 +14,50 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 		}
 		return db;
 	};
+
 	this.getDB = function (name) {
 		return db;
 	};
-	this.insert = function(table, values) {
+
+	this.executeSQL = function(query, values, success_callback, err_callback) {
+
+		//console.log("Query: "+ query +" VALUES: "+values);
+		
+		if (window.cordova) {
+			$cordovaSQLite.execute(db, query, values).then(success_callback, err_callback);
+		} else {
+			db.transaction(function(ts) {
+				ts.executeSql(query, values);
+			}, err_callback, success_callback);
+		}
+	};
+	
+	this.create = function(table, attributes, success_callback, err_callback) {
+
+		var query = "CREATE TABLE IF NOT EXISTS "+table+"(";
+		for(var attr in attributes) {
+			query += attr +" "+ attributes[attr] + ",";
+		}
+		query = query.substr(0, query.length-1);
+		query += ")";
+
+		this.executeSQL(query, null, success_callback, err_callback)
+	};
+
+	this.delete = function (table, success_callback, err_callback) {
+		this.executeSQL("DROP TABLE "+table, null, success_callback, err_callback);	
+	};
+
+	this.insert = function(table, values, success_callback, err_callback) {
+
 		var query = "INSERT INTO "+table+" VALUES (";
 		for(var v in values) {
 			query += "?,"
 		}
 		query = query.substr(0, query.length-1);
-		query += ");";
+		query += ")";
 		
-		if (window.cordova) {
-			$cordovaSQLite.execute(db, query, values).then(
-				function (res) {
-					console.log('INSERTED ID: ' + res.insertId);
-				},
-				function (err) {
-					console.log('ERROR: ' + err);
-				}
-			);
-		} else {
-			db.transaction(function(ts) {
-				ts.executeSql(query, [values], 
-					function (ts, res) {
-						console.log('INSERTED ID: ' + res.insertId);
-					},
-					function (ts, err) {
-						console.log(err);
-					}
-				);
-			});
-		}
+		this.executeSQL(query, values, success_callback, err_callback);
 	};
 })
 

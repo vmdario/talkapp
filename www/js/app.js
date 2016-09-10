@@ -71,9 +71,25 @@ angular.module('app', ['ionic', 'app.tabs.messages', 'app.tabs.contacts', 'app.m
 		var db = DBService.init('talkapp.db');
 		console.log(db);
 
-		DBService.insert('msg', [1, 'This is my message']);
-		DBService.insert('msg', [2, 'Thiessage']);
-		DBService.insert('msg', [3, 'This is mysage']);
-		DBService.insert('msg', [4, 'Thage']);
+		DBService.create('messages', {
+			id: 'integer primary key',
+			from_contact: 'integer',
+			to_contact: 'integer',
+			message: 'text',
+			date: 'char(20)'
+		}, null, function (err) {
+			console.log("Error in creating DB: "+err.message);
+		});
+
+		DBService.create('contacts', {
+			id: 'integer primary key',
+			name: 'varchar(30) not null',
+			status: 'varchar(30) default \'Available\'',
+			phone_number: 'char(20)'
+		}, null, function (err) {
+			console.log("Error in creating DB: "+err.message);
+		});
+
+		
 	});
 })
