@@ -1,6 +1,6 @@
 
 angular.module('app.tabs.contacts', ['app.navpopover'])
-.controller('ContactsTabCtrl', function ($scope, NavPopover) {
+.controller('ContactsTabCtrl', function ($scope, NavPopover, $timeout) {
 
     $scope.openPopover = function (evt) {
         NavPopover.open(evt);
@@ -15,4 +15,14 @@ angular.module('app.tabs.contacts', ['app.navpopover'])
     	{name: "João", status: "Working"},
     	{name: "Camila", status: "Available"}
     ];
+
+    $scope.loadContacts = function() {
+
+    };
+
+    $timeout(function() {
+        // initialization code
+        console.log("ContactsTabCtrl")
+        $scope.loadContacts();
+    });
 });

@@ -1,8 +1,0 @@
-
-TalkApp definitions
--------------------
-
-1) Browser IndexedDB: a database represents a single table (used in SQLite).
-
-- Messages (table): id, from_contact, to_contact, message, date
-- Contact (table): id, name, status, phone_number
