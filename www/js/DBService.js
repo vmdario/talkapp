@@ -59,5 +59,22 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 		
 		this.executeSQL(query, values, success_callback, err_callback);
 	};
+
+	this.select = function(query, values, success_callback, err_callback) {
+		var result = [];
+		if(window.cordova) {
+
+		} else {
+			db.transaction(function (tx) {
+				tx.executeSql(query, values, function(tx, rs){
+					for(var i=0; i<rs.rows.length; i++) {
+						var row = rs.rows.item(i)
+						result[i] = row;
+					}
+					success_callback(result); // <-- new bit here
+				}, err_callback);
+			});
+		}
+	};
 })
 ;

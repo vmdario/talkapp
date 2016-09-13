@@ -1,6 +1,6 @@
 
 angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
-.controller('MessagesTabCtrl', function ($scope, NavPopover, $timeout) {
+.controller('MessagesTabCtrl', function ($scope, NavPopover, $timeout, DBService) {
 
     // Popover management
     $scope.openPopover = function (evt) {
@@ -10,7 +10,7 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
         NavPopover.close();
     }
 
-    $scope.messages = [{name:"ba"}];
+    $scope.messages = [];
 
     $scope.showMessageDetails = function (event) {
         console.log(event);
@@ -18,12 +18,21 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
     };
 
     $scope.loadMessages = function() {
-
+        DBService.select("SELECT * FROM messages m join contacts c on m.to_contact = c.id", [], function(res) {
+            for(var i = 0; i < res.length; ++i) {
+                //console.log(res[i]);
+                $scope.messages.push({
+                    "name": res[i].name,
+                    "date": res[i].date
+                });
+            }
+        }, function(err) {
+            console.log("Error: "+err.message);
+        });
     };
 
     $timeout(function() {
         // initialization code
-        console.log("MessagesTabCtrl")
         $scope.loadMessages();
     });
 })
