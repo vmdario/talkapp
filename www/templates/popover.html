@@ -1,17 +1,17 @@
 ﻿
-<ion-popover-view  ng-controller="NavPopoverCtrl">
+<ion-popover-view>
     <ion-content>
-        <ul class="list" ng-click="close();">
-            <a class="item" href="#/">
+        <ul class="list" ng-controller="NavPopoverCtrl" ng-click="close()">
+            <a class="item" href="#">
                 New message
             </a>
-            <a class="item" href="#/">
+            <a class="item" href="#">
                 New contact
             </a>
             <a class="item" href="#/tab/contacts">
                 Contacts
             </a>
-            <a class="item" href="#/">
+            <a class="item" href="#/settings">
                 Settings
             </a>
             <a class="item" href="#/about">

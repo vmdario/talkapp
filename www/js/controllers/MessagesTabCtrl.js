@@ -13,7 +13,6 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
     $scope.messages = [];
 
     $scope.showMessageDetails = function (event) {
-        console.log(event);
         $state.go('message-detail', {contactId: 13});
     };
 

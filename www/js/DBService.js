@@ -63,15 +63,19 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 	this.select = function(query, values, success_callback, err_callback) {
 		var result = [];
 		if(window.cordova) {
-
+			$cordovaSQLite.execute(db, query, values).then(function(rs) {
+				for(var i=0; i<rs.rows.length; i++) {
+					result[i] = rs.rows.item(i);
+				}
+				success_callback(result);
+			}, err_callback);
 		} else {
 			db.transaction(function (tx) {
 				tx.executeSql(query, values, function(tx, rs){
 					for(var i=0; i<rs.rows.length; i++) {
-						var row = rs.rows.item(i)
-						result[i] = row;
+						result[i] = rs.rows.item(i);
 					}
-					success_callback(result); // <-- new bit here
+					success_callback(result);
 				}, err_callback);
 			});
 		}

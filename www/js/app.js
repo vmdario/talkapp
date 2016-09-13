@@ -3,7 +3,14 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('app', ['ionic', 'app.tabs.messages', 'app.tabs.contacts', 'app.message-detail'])
+angular.module('app', [
+	'ionic',
+	'app.tabs.messages',
+	'app.tabs.contacts',
+	'app.about',
+	'app.message-detail',
+	'app.settings'
+])
 .config(function ($stateProvider, $urlRouterProvider) {
 
 	$stateProvider
@@ -39,7 +46,13 @@ angular.module('app', ['ionic', 'app.tabs.messages', 'app.tabs.contacts', 'app.m
 	  })
 	  .state('about', {
 		  url: "/about",
-		  templateUrl: "templates/about.html"
+		  templateUrl: "templates/about.html",
+		  controller: "AboutCtrl"
+	  })
+	  .state('settings', {
+		  url: '/settings',
+		  templateUrl: 'templates/settings.html',
+		  controller: 'SettingsCtrl'
 	  });
 	$urlRouterProvider.otherwise("/tab/messages");
 })

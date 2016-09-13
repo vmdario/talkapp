@@ -19,7 +19,7 @@ angular.module('app.navpopover', [])
 
 })
 
-.controller('NavPopoverCtrl', function ($scope, NavPopover) {
+.controller('NavPopoverCtrl', function ($scope, NavPopover, $state) {
     
     $scope.close = function () {
         NavPopover.close();
@@ -28,4 +28,12 @@ angular.module('app.navpopover', [])
     $scope.open = function(event) {
         NavPopover.open(event);
     };
+
+    $scope.settings = function() {
+        $state.go('settings');
+    };
+
+    $scope.about = function() {
+        $state.go('about');
+    }
 });
