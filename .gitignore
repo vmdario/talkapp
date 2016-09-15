@@ -4,6 +4,7 @@
 node_modules/
 platforms/
 plugins/
+bower_components
 
 # User-specific files
 *.suo
