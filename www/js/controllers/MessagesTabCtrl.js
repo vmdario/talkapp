@@ -1,6 +1,6 @@
 
 angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
-.controller('MessagesTabCtrl', function ($scope, NavPopover, $timeout, DBService) {
+.controller('MessagesTabCtrl', function ($scope, NavPopover, $timeout, DBService, $state) {
 
     // Popover management
     $scope.openPopover = function (evt) {
@@ -12,16 +12,24 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
 
     $scope.messages = [];
 
-    $scope.showMessageDetails = function (event) {
-        $state.go('message-detail', {contactId: 13});
+    $scope.showMessageDetails = function (contact_name) {
+        var index = -1;
+        $scope.messages.forEach(function(message) {
+            if (contact_name === message.contact_name) {
+                index = message.to_contact;
+            }
+        });
+        $state.go('message-detail', {contactId: index, contactName: contact_name});
     };
 
     $scope.loadMessages = function() {
-        DBService.select("SELECT * FROM messages m join contacts c on m.to_contact = c.id", [], function(res) {
+        DBService.select("SELECT c.name, m.to_contact, m.message, m.date FROM messages m join contacts c on m.to_contact = c.id GROUP BY c.name", [], function(res) {
             for(var i = 0; i < res.length; ++i) {
                 //console.log(res[i]);
                 $scope.messages.push({
-                    "name": res[i].name,
+                    "contact_name": res[i].name,
+                    "to_contact": res[i].to_contact,
+                    "message": res[i].message,
                     "date": res[i].date
                 });
             }
@@ -30,9 +38,6 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
         });
     };
 
-    $timeout(function() {
-        // initialization code
-        $scope.loadMessages();
-    });
+    $scope.loadMessages();
 })
 ;

@@ -1,0 +1,21 @@
+
+<ion-view ng-controller="ContactInfoCtrl" view-title="{{contact.name}}">
+
+    <ion-nav-buttons>
+        <p>
+            <a class="button icon icon-left ion-chevron-left" href="#/tab/contacts">
+            </a>
+        </p>
+    </ion-nav-buttons>
+
+    <ion-content class="padding">
+        <div style="text-align:center">
+            <img src="img/noavatar.png">
+            <hr>
+        	<h2 class="contact-name">{{contact.name}}</h2>
+        	<p>{{contact.status}}</p>
+        	<p>{{contact.phone_number}}</p>
+        </div>
+    </ion-content>
+
+</ion-view>

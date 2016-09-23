@@ -9,6 +9,7 @@ angular.module('app', [
 	'app.tabs.contacts',
 	'app.about',
 	'app.message-detail',
+	'app.contact-info',
 	'app.settings'
 ])
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -38,16 +39,24 @@ angular.module('app', [
 		  }
 	  })
 	  .state('message-detail', {
-	  		url: "/message-detail",
-	  		templateUrl: "templates/message-detail.html",
-	  		params: {
-	  			contactId: null
-	  		}
+			url: "/message-detail",
+			templateUrl: "templates/message-detail.html",
+			params: {
+				contactId: null,
+				contactName: null
+			}
+	  })
+	  .state('contact-info', {
+			url: "/contact-info",
+			templateUrl: "templates/contact-info.html",
+			params: {
+				contactId: null
+			}
 	  })
 	  .state('about', {
-		  url: "/about",
-		  templateUrl: "templates/about.html",
-		  controller: "AboutCtrl"
+			url: "/about",
+			templateUrl: "templates/about.html",
+			controller: "AboutCtrl"
 	  })
 	  .state('settings', {
 		  url: '/settings',
@@ -60,7 +69,7 @@ angular.module('app', [
 .run(function ($ionicPlatform, DBService) {
 
 	$ionicPlatform.onHardwareBackButton(function () {
-		$ionicPlatform.exitApp();
+		console.log("Exiting......");
 	});
 
 	$ionicPlatform.ready(function () {
@@ -106,7 +115,6 @@ angular.module('app', [
 		// DBService.insert("contacts", [1,'Carlos Ferreira','Available','555-55553']);
 		// DBService.insert("contacts", [2,'Julia Maria',':)','555-54253']);
 		// DBService.insert("contacts", [3,'Renata Martins','....','523-25553']);
-
 		// DBService.insert("messages", [1,1,2,'Testing ....',new Date('11/11/2015 12:53:05').toLocaleString()]);
 		// DBService.insert("messages", [2,1,3,'Another test',new Date('06/03/2015 17:33:45').toLocaleString()]);
 	});

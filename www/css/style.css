@@ -8,3 +8,13 @@ p.message-date {
 	font-size: 10px;
 	color: rgb(150,150,150);
 }
+
+.messages-detail {
+	background-color: rgb(240,240,240);
+}
+
+.messages-detail .list .item {
+	border-radius: 10px;
+	margin: 10px 7px;
+	width: 70%;
+}

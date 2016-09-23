@@ -1,5 +1,5 @@
 
-<ion-view ng-controller="MessageDetailCtrl" view-title="{{contactId}}">
+<ion-view ng-controller="MessageDetailCtrl" view-title="{{contact_name}}">
 
     <ion-nav-buttons>
         <p>
@@ -8,9 +8,11 @@
         </p>
     </ion-nav-buttons>
 
-    <ion-content class="padding">
-        <div style="text-align:center">
-            <h4>{{contactId}}</h4>
+    <ion-content class="messages-detail">
+        <div class="list">
+            <div class="item" ng-repeat="msg in messages">
+                <p>{{msg.message}}</p>
+            </div>
         </div>
     </ion-content>
 

@@ -3,9 +3,10 @@
 
     <ion-content>
         <div class="list">
-        	<a class="item item-avatar" href="#/message-detail" ng-click="showMessageDetails($event)" ng-repeat="message in messages | orderBy: 'name'">
+        	<a class="item item-avatar" href="#/message-detail" ng-click="showMessageDetails(message.contact_name)" ng-repeat="message in messages | orderBy: 'contact_name'">
         		<img src="img/noavatar.png">
-        		<h2 class="contact-name">{{message.name}}</h2>
+        		<h2 class="contact-name">{{message.contact_name}}</h2>
+                <p>{{message.message}}</p>
         		<p class="message-date">{{message.date}}</p>
         	</a>
         </div>
