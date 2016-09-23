@@ -112,10 +112,15 @@ angular.module('app', [
 			console.log("Error in creating DB: "+err.message);
 		});
 
-		// DBService.insert("contacts", [1,'Carlos Ferreira','Available','555-55553']);
-		// DBService.insert("contacts", [2,'Julia Maria',':)','555-54253']);
-		// DBService.insert("contacts", [3,'Renata Martins','....','523-25553']);
-		// DBService.insert("messages", [1,1,2,'Testing ....',new Date('11/11/2015 12:53:05').toLocaleString()]);
-		// DBService.insert("messages", [2,1,3,'Another test',new Date('06/03/2015 17:33:45').toLocaleString()]);
+		DBService.insert("contacts", [1,'Carlos Ferreira','Available','555-55553']);
+		DBService.insert("contacts", [2,'Julia Maria',':)','555-54253']);
+		DBService.insert("contacts", [3,'Renata Martins','....','523-25553']);
+
+		DBService.insert("messages", [1,1,2,'Testing ....',new Date('11/01/2015 12:53:05').toLocaleString()]);
+		DBService.insert("messages", [2,1,3,'Another test',new Date().toLocaleString()]);
+		DBService.insert("messages", [3,1,3,'Another test 2 :D',new Date().toLocaleString()]);
+		DBService.insert("messages", [4,3,1,'Test 3 -> 1',new Date().toLocaleString()]);
+		DBService.insert("messages", [5,3,1,'Another test 3 -> 1',new Date().toLocaleString()]);
+		DBService.insert("messages", [6,1,2,'Testing again!',new Date().toLocaleString()]);
 	});
 })
