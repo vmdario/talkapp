@@ -1,5 +1,37 @@
 /* Empty. Add your own CSS if you like */
 
+.login-modal .popup {
+	width: 420px;
+	max-width: 95%;
+	border-radius: 10px;
+}
+.login-modal .popup #file-input {
+	display: none;
+}
+.login-img {
+	border-radius: 100px;
+	display: block;
+	margin: 0px auto;
+	height: 140px;
+	width: 140px;
+}
+.login-content .scroll {
+	height: 100%;
+	width: 100%;
+}
+.spinner {
+	margin: auto;
+	display: flex;
+	height: 100%;
+	width: 100%;
+}
+.spinner svg {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  display: flex;
+}
+
 h2.contact-name {
 	font-weight: bold;
 }

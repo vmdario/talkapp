@@ -1,6 +1,11 @@
 
 <ion-view view-title="Messages">
 
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
     <ion-content>
         <div class="list">
         	<a class="item item-avatar" href="#/message-detail" ng-click="showMessageDetails(message.contact_name)" ng-repeat="message in messages | orderBy: 'contact_name'">

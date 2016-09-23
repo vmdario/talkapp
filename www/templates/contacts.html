@@ -1,6 +1,11 @@
 
 <ion-view title="Contacts">
 
+  <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
   <ion-content>
     <div class="list">
       <a class="item item-avatar" href="" ng-repeat="contact in contacts | orderBy:'name'" ng-click="showContact(contact.name)">
