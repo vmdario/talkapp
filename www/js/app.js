@@ -97,9 +97,8 @@ angular.module('app', [
 
 		// initializing sqlite
 		var db = DBService.init('talkapp.db');
-		console.log(db);
 
-		DBService.create('messages', {
+		DBService.createIfNotExists('messages', {
 			id: 'integer primary key',
 			from_contact: 'integer',
 			to_contact: 'integer',
@@ -109,7 +108,7 @@ angular.module('app', [
 			console.log("Error in creating DB: "+err.message);
 		});
 
-		DBService.create('contacts', {
+		DBService.createIfNotExists('contacts', {
 			id: 'integer primary key',
 			name: 'varchar(30) not null',
 			status: 'varchar(30) default \'Available\'',

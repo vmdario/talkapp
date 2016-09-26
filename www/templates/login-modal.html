@@ -1,19 +1,24 @@
 
-<div class="list">
-	<label class="item item-input">
+<form name="loginForm">
+	<div class="list">
+		<label class="item item-input">
 			<img class="login-img" src="img/noavatar.png">
-		<input id="file-input" type="file" ng-model="data.picture">
-	</label>
-	<label class="item item-input">
-		<span class="input-label">Name</span>
-		<input type="text" ng-model="data.name">
-	</label>
-	<label class="item item-input">
-		<span class="input-label">Status</span>
-		<input type="text" ng-model="data.status">
-	</label>
-	<label class="item item-input">
-		<span class="input-label">Phone number</span>
-		<input type="text" ng-model="data.phone_number">
-	</label>
-</div>
+			<input id="file-input" type="file" ng-model="data.picture">
+		</label>
+		<label class="item item-input">
+			<span class="input-label">Name</span>
+			<input type="text" ng-model="data.name" required>
+		</label>
+		<label class="item item-input">
+			<span class="input-label">Status</span>
+			<input type="text" ng-model="data.status" required>
+		</label>
+		<label class="item item-input">
+			<span class="input-label">Phone number</span>
+			<input type="text" ng-model="data.phone_number" required>
+		</label>
+		<div class="error-msg">
+			<p ng-class="empty_fields">You must fill out name, status and phone number!</p>
+		</div>
+	</div>
+</form>

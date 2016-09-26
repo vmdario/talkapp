@@ -1,5 +1,9 @@
 /* Empty. Add your own CSS if you like */
 
+.hidden {
+	display: none;
+}
+
 .login-modal .popup {
 	width: 420px;
 	max-width: 95%;
@@ -7,6 +11,26 @@
 }
 .login-modal .popup #file-input {
 	display: none;
+}
+.login-modal .error-msg {
+	width: 100%;
+	overflow: hidden;
+}
+@keyframes slide-down-red {
+	from {
+		margin-top: -100%;
+		height: 300%;
+	}
+	to {
+		color: red;
+		margin-top: 0%;
+		height: 100%;
+	}
+}
+.login-modal .empty-fields-error {
+	animation: 0.5s slide-down-red;
+	margin-top: 10px;
+	color: red;
 }
 .login-img {
 	border-radius: 100px;

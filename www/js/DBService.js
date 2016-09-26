@@ -34,6 +34,18 @@ angular.module('app.db', ['ionic', 'ngCordova'])
 	
 	this.create = function(table, attributes, success_callback, err_callback) {
 
+		var query = "CREATE TABLE "+table+"(";
+		for(var attr in attributes) {
+			query += attr +" "+ attributes[attr] + ",";
+		}
+		query = query.substr(0, query.length-1);
+		query += ")";
+
+		this.executeSQL(query, null, success_callback, err_callback)
+	};
+
+	this.createIfNotExists = function(table, attributes, success_callback, err_callback) {
+
 		var query = "CREATE TABLE IF NOT EXISTS "+table+"(";
 		for(var attr in attributes) {
 			query += attr +" "+ attributes[attr] + ",";
