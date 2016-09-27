@@ -69,14 +69,10 @@ angular.module('app', [
 		  templateUrl: 'templates/settings.html',
 		  controller: 'SettingsCtrl'
 	  });
-	$urlRouterProvider.otherwise("/tab/messages");
+	$urlRouterProvider.otherwise("/login");
 })
 
 .run(function ($ionicPlatform, DBService, $state) {
-
-	$ionicPlatform.onHardwareBackButton(function () {
-		console.log("Exiting......");
-	});
 
 	$ionicPlatform.ready(function () {
 
@@ -97,14 +93,18 @@ angular.module('app', [
 
 		// initializing sqlite
 		var db = DBService.init('talkapp.db');
-
+		console.log("Creating tables");
+		
 		DBService.createIfNotExists('messages', {
 			id: 'integer primary key',
 			from_contact: 'integer',
 			to_contact: 'integer',
 			message: 'text',
 			date: 'char(21)'
-		}, null, function (err) {
+		}).then(function(res) {
+			console.log("Success table messages");
+			console.log(res);
+		}).catch(function (err) {
 			console.log("Error in creating DB: "+err.message);
 		});
 
@@ -113,7 +113,10 @@ angular.module('app', [
 			name: 'varchar(30) not null',
 			status: 'varchar(30) default \'Available\'',
 			phone_number: 'char(20)'
-		}, null, function (err) {
+		}).then(function(res) {
+			console.log("Success table contacts");
+			console.log(res);
+		}).catch(function (err) {
 			console.log("Error in creating DB: "+err.message);
 		});
 

@@ -1,5 +1,5 @@
 
-angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
+angular.module('app.tabs.messages', ['app.navpopover', 'app.services'])
 .controller('MessagesTabCtrl', function ($scope, NavPopover, $timeout, DBService, $state) {
 
     // Popover management
@@ -23,7 +23,8 @@ angular.module('app.tabs.messages', ['app.navpopover', 'app.db'])
     };
 
     $scope.loadMessages = function() {
-        DBService.select("SELECT c.name, m.to_contact, m.message, m.date FROM messages m join contacts c on m.to_contact = c.id GROUP BY c.name", [], function(res) {
+        DBService.query("SELECT c.name, m.to_contact, m.message, m.date FROM messages m join contacts c on m.to_contact = c.id GROUP BY c.name")
+        .then(function(res) {
             for(var i = 0; i < res.length; ++i) {
                 //console.log(res[i]);
                 $scope.messages.push({

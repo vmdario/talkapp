@@ -1,13 +1,19 @@
 
-angular.module('app.login', ['app.db'])
-.controller("LoginCtrl", function ($scope, DBService, $ionicPopup, $timeout, $document) {
+angular.module('app.login', ['app.services'])
+.controller("LoginCtrl", function ($scope, DBService, $ionicPopup, $timeout, $q) {
 
 	$scope.empty_fields = 'hidden';
 
+	// return promise
 	$scope.showModal = function () {
-		$scope.data = {};
+		$scope.data = {
+			name: '',
+			status: '',
+			phone_number: '',
+			picture: null
+		};
 
-		var modal = $ionicPopup.show({
+		return $ionicPopup.show({
 			title: 'First time here, log in!',
 			templateUrl: 'templates/login-modal.html',
 			scope: $scope,
@@ -24,42 +30,22 @@ angular.module('app.login', ['app.db'])
 							$scope.empty_fields = 'empty-fields-error';
 						} else {
 							$scope.empty_fields = 'hidden';
-
-							$scope.login($scope.data);
-
 							return $scope.data;
 						}
 					}
 				}
 			]
 		});
-		return modal;
 	};
 
 	$scope.findUser = function() {
 
-		var user_found = false;
+		var user_found = true;
 
-		DBService.createIfNotExists('user', {
-			id: 'integer primary key',
-			name: 'varchar(30) not null',
-			status: 'varchar(30) default \'Available\'',
-			phone_number: 'varchar(20)',
-			picture: 'blob'
-		}, null, function (err) {
-			console.log("Error creating DB user: "+err.message);
+		DBService.query("SELECT * FROM user WHERE id = 1").then(function(res) {
+			console.log(res);
 		});
 
-		DBService.select("SELECT * FROM user WHERE id = 1", [], function(res) {
-			if(res.length == 0) {
-				// no user saved yet
-				user_found = false;
-			}
-			else {
-				// user found
-				user_found = true;
-			}
-		});
 		return user_found;
 	};
 
@@ -72,11 +58,10 @@ angular.module('app.login', ['app.db'])
 	// search database for user login
 	if(!$scope.findUser()) {
 		console.log("No user");
-		//$scope.showModal();
+		$scope.showModal().then(function(res) {
+
+		});
 	}
 	else {
-		DBService.select("SELECT * FROM user WHERE id = 1", [], function(res) {
-			console.log(res);
-		});
 	}
 });

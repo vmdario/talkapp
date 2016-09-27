@@ -1,5 +1,5 @@
 
-angular.module('app.contact-info', ['app.db'])
+angular.module('app.contact-info', ['app.services'])
 .controller('ContactInfoCtrl', function ($scope, $stateParams, DBService) {
 
 	$scope.contact = {};
