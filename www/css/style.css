@@ -4,15 +4,15 @@
 	display: none;
 }
 
-.login-modal .popup {
+.modal .popup {
 	width: 420px;
 	max-width: 95%;
 	border-radius: 10px;
 }
-.login-modal .popup #file-input {
+.modal .popup #file-input {
 	display: none;
 }
-.login-modal .error-msg {
+.modal .error-msg {
 	width: 100%;
 	overflow: hidden;
 }
@@ -27,7 +27,7 @@
 		height: 100%;
 	}
 }
-.login-modal .empty-fields-error {
+.modal .empty-fields-error {
 	animation: 0.5s slide-down-red;
 	margin-top: 10px;
 	color: red;
@@ -39,7 +39,7 @@
 	height: 140px;
 	width: 140px;
 }
-.login-content .scroll {
+.loading-content .scroll {
 	height: 100%;
 	width: 100%;
 }

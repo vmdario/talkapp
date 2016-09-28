@@ -1,6 +1,6 @@
 
 //angular.module('app.login', ['app.services','app.utils'])
-app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $ionicPopup, $timeout, utils, $state, $ionicPlatform) {
+app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $ionicPopup, $timeout, utils, $state, $ionicPlatform) {
 
 	$scope.empty_fields = 'hidden';
 
@@ -17,7 +17,7 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 			title: 'First time here, log in!',
 			templateUrl: 'templates/login-modal.html',
 			scope: $scope,
-			cssClass: 'login-modal',
+			cssClass: 'modal',
 			buttons: [
 				{
 					text: '<b>Login</b>',
@@ -41,11 +41,21 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 		DBService.insert("user", [null, data.name, data.status, data.phone_number, data.picture])
 		.then(function (result) {
 			utils.d("Inserting successful");
-			$state.go('tabs.messages');
+
+			$timeout(function() {
+				$scope.forwardPage();
+			}, 1000);
 		})
 		.catch(function(err) {
 			utils.e("Error inserting DB user: "+err.message);
 		});
+	};
+
+	$scope.forwardPage = function() {
+		$ionicHistory.nextViewOptions({
+			disableBack: true
+		});
+		$state.go('loading', {next: 'tabs.messages'});
 	};
 
 	// search database for user login
@@ -53,7 +63,7 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 
 		// initializing sqlite dbs
 		DBService.init('talkapp.db');
-		
+
 		DBService.createTableIfNotExists('messages', {
 			id: 'integer primary key',
 			from_contact: 'integer',
@@ -68,7 +78,7 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 			id: 'integer primary key',
 			name: 'varchar(30) not null',
 			status: 'varchar(30) default \'Available\'',
-			phone_number: 'char(20)',
+			phoneNumber: 'char(20)',
 			picture: 'blob'
 		}).then(function(res) {
 			utils.d("Success table contacts");
@@ -81,9 +91,13 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 				var p = res.rows.item(0);
 				User.name = p.name;
 				User.status = p.status;
-				User.phone_number = p.phone_number;
+				User.phoneNumber = p.phone_number;
 				User.picture = p.picture;
-				$state.go('tabs.messages');
+				User.isValid = true;
+
+				$timeout(function() {
+					$scope.forwardPage();
+				}, 1000);
 			}, function(err) {
 				// not found
 				DBService.createTable("user", {
@@ -101,6 +115,6 @@ app.controller("LoginCtrl", function ($scope, DBService, User, $ionicHistory, $i
 					$scope.login(res);
 				});
 			});		
-		}, 1000);
+		}, 800);
 	});
 });

@@ -4,11 +4,21 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('app', ['ionic', 'ngCordova'])
-.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $logProvider,$ionicConfigProvider) {
 
 	$logProvider.debugEnabled(true);
+	$ionicConfigProvider.backButton.text('').icon('ion-ios7-arrow-left');
 
 	$stateProvider
+	  .state('loading', {
+	  		url: "/loading",
+	  		templateUrl: "templates/loading.html",
+	  		controller: "LoadingCtrl",
+	  		params: {
+	  			next: 'login',
+	  			params: null
+	  		}
+	  })
 	  .state('login', {
 	  		url: "/login",
 	  		templateUrl: "templates/login.html",
@@ -62,7 +72,7 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 		  templateUrl: 'templates/settings.html',
 		  controller: 'SettingsCtrl'
 	  });
-	$urlRouterProvider.otherwise("/login");
+	$urlRouterProvider.otherwise("/tabs/messages");
 })
 
 .run(function ($ionicPlatform, $state) {
@@ -84,4 +94,6 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 			StatusBar.styleDefault();
 		}
 	});
+
+	$state.go('loading', {next: 'login'});
 })

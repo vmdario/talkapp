@@ -18,7 +18,7 @@ app.factory('NavPopover', function ($ionicPopover) {
 
 })
 
-.controller('NavPopoverCtrl', function ($scope, NavPopover, $state) {
+.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, DBService, $state, $ionicPopup) {
     
     $scope.close = function () {
         NavPopover.close();
@@ -26,6 +26,45 @@ app.factory('NavPopover', function ($ionicPopover) {
 
     $scope.open = function(event) {
         NavPopover.open(event);
+    };
+
+    $scope.empty_fields = 'hidden';
+    $scope.showNewContactModal = function() {
+        $scope.data = {};
+
+        var modal = $ionicPopup.show({
+            templateUrl: 'templates/new-contact-modal.html',
+            title: 'New Contact',
+            cssClass: 'modal',
+            scope: $scope,
+            buttons: [
+                { 
+                    text: 'Cancel'
+                },
+                {
+                    text: '<b>Save</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        if (!$scope.data.name || !$scope.data.status || !$scope.data.phoneNumber) {
+                            //don't allow the user to close unless he enters all fields
+                            e.preventDefault();
+                            $scope.empty_fields = 'empty-fields-error';
+                        } else {
+                            $scope.empty_fields = 'hidden';
+                            return $scope.data;
+                        }
+                    }
+                }
+            ]
+        }).then(function(res) {
+            utils.d(res);
+            DBService.insert('contacts', [null, res.name, res.status, res.phoneNumber, res.picture])
+            .then(function(res) {
+                $state.go('loading', {next: 'tabs.contacts'});
+            }, function(err) {
+                utils.e(err.message);
+            });
+        });
     };
 
     $scope.settings = function() {

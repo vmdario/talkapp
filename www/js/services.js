@@ -92,9 +92,10 @@ app.service('DBService', function($cordovaSQLite, $q, $ionicPlatform, utils) {
 })
 .factory('User', function () {
 	var user = {
+		isValid: false,
 		name: '',
 		status: '',
-		phone_number: '',
+		phoneNumber: '',
 		picture: null
 	}
 	return user;
