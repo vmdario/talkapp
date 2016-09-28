@@ -1,8 +1,8 @@
 
-angular.module('app.settings', [])
-.controller('SettingsCtrl', function ($scope, $ionicHistory) {
+//angular.module('app.settings', [])
+app.controller('SettingsCtrl', function ($scope) {
 
     $scope.back = function() {
-        $ionicHistory.goBack(1);
+        history.back();
     }
 });

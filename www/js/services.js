@@ -1,15 +1,14 @@
 
-angular.module('app.services', ['ionic', 'ngCordova'])
-.service('DBService', function($cordovaSQLite, $q, $ionicPlatform) {
+//angular.module('app.services', ['ionic', 'ngCordova', 'app.utils'])
+app.service('DBService', function($cordovaSQLite, $q, $ionicPlatform, utils) {
 
 	var db = null;
 
 	this.init = function (name) {
 		if (window.cordova) {
-			console.log("cordova")
 			db = $cordovaSQLite.openDB({name: name, location: 'default'});
 		} else {
-			db = window.openDatabase(name, "", "", 1024*1024*1);
+			db = window.openDatabase(name, "", "", 1024*1024*10);
 		}
 		return db;
 	};
@@ -33,7 +32,7 @@ angular.module('app.services', ['ionic', 'ngCordova'])
 		return output;
 	}
 	
-	this.create = function(table, attributes) {
+	this.createTable = function(table, attributes) {
 
 		var query = "CREATE TABLE "+table+"(";
 		for(var attr in attributes) {
@@ -45,7 +44,7 @@ angular.module('app.services', ['ionic', 'ngCordova'])
 		return this.executeSQL(query, null);
 	};
 
-	this.createIfNotExists = function(table, attributes) {
+	this.createTableIfNotExists = function(table, attributes) {
 
 		var query = "CREATE TABLE IF NOT EXISTS "+table+"(";
 		for(var attr in attributes) {
@@ -57,7 +56,7 @@ angular.module('app.services', ['ionic', 'ngCordova'])
 		return this.executeSQL(query, null);
 	};
 
-	this.delete = function (table) {
+	this.dropTable = function (table) {
 		return this.executeSQL("DROP TABLE "+table);	
 	};
 
@@ -82,8 +81,7 @@ angular.module('app.services', ['ionic', 'ngCordova'])
 		    .then(function (result) {
 		      q.resolve(result);
 		    }, function (error) {
-		      console.warn('I found an error');
-		      console.warn(error);
+		      //utils.w('Error: '+ error.message);
 		      q.reject(error);
 		    });
 		});
@@ -91,6 +89,15 @@ angular.module('app.services', ['ionic', 'ngCordova'])
 	};
 
 	this.query = this.executeSQL;
+})
+.factory('User', function () {
+	var user = {
+		name: '',
+		status: '',
+		phone_number: '',
+		picture: null
+	}
+	return user;
 })
 .factory('Contacts', function($cordovaSQLite, DBService) {
 

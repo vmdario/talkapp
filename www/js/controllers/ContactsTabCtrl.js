@@ -1,6 +1,5 @@
 
-angular.module('app.tabs.contacts', ['app.navpopover'])
-.controller('ContactsTabCtrl', function ($scope, $state, NavPopover, $timeout, DBService) {
+app.controller('ContactsTabCtrl', function ($scope, $state, NavPopover, $timeout, DBService) {
 
     $scope.openPopover = function (evt) {
         NavPopover.open(evt);
@@ -22,17 +21,16 @@ angular.module('app.tabs.contacts', ['app.navpopover'])
     };
 
     $scope.loadContacts = function() {
-        DBService.select("SELECT * FROM contacts", [], function(res) {
-            for(var i = 0; i < res.length; ++i) {
-                //console.log(res[i]);
+        DBService.query("SELECT * FROM contacts").then(function(res) {
+            for(var i = 0; i < res.rows.length; ++i) {
                 $scope.contacts.push({
-                    "id": res[i].id,
-                    "name": res[i].name,
-                    "status": res[i].status
+                    "id": res.rows.item(i).id,
+                    "name": res.rows.item(i).name,
+                    "status": res.rows.item(i).status
                 });
             }
-        }, function(err) {
-            console.log("Error: "+err.message);
+        }).catch(function(err) {
+            utils.e("Error: "+err.message);
         });
     };
 

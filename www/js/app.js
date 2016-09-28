@@ -3,17 +3,10 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('app', [
-	'ionic',
-	'app.login',
-	'app.tabs.messages',
-	'app.tabs.contacts',
-	'app.about',
-	'app.message-detail',
-	'app.contact-info',
-	'app.settings'
-])
-.config(function ($stateProvider, $urlRouterProvider) {
+var app = angular.module('app', ['ionic', 'ngCordova'])
+.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+
+	$logProvider.debugEnabled(true);
 
 	$stateProvider
 	  .state('login', {
@@ -72,7 +65,7 @@ angular.module('app', [
 	$urlRouterProvider.otherwise("/login");
 })
 
-.run(function ($ionicPlatform, DBService, $state) {
+.run(function ($ionicPlatform, $state) {
 
 	$ionicPlatform.ready(function () {
 
@@ -90,47 +83,5 @@ angular.module('app', [
 		if (window.StatusBar) {
 			StatusBar.styleDefault();
 		}
-
-		// initializing sqlite
-		var db = DBService.init('talkapp.db');
-		console.log("Creating tables");
-		
-		DBService.createIfNotExists('messages', {
-			id: 'integer primary key',
-			from_contact: 'integer',
-			to_contact: 'integer',
-			message: 'text',
-			date: 'char(21)'
-		}).then(function(res) {
-			console.log("Success table messages");
-			console.log(res);
-		}).catch(function (err) {
-			console.log("Error in creating DB: "+err.message);
-		});
-
-		DBService.createIfNotExists('contacts', {
-			id: 'integer primary key',
-			name: 'varchar(30) not null',
-			status: 'varchar(30) default \'Available\'',
-			phone_number: 'char(20)'
-		}).then(function(res) {
-			console.log("Success table contacts");
-			console.log(res);
-		}).catch(function (err) {
-			console.log("Error in creating DB: "+err.message);
-		});
-
-		// DBService.insert("contacts", [1,'Carlos Ferreira','Available','555-55553']);
-		// DBService.insert("contacts", [2,'Julia Maria',':)','555-54253']);
-		// DBService.insert("contacts", [3,'Renata Martins','....','523-25553']);
-
-		// DBService.insert("messages", [1,1,2,'Testing ....',new Date('11/01/2015 12:53:05').toLocaleString()]);
-		// DBService.insert("messages", [2,1,3,'Another test',new Date().toLocaleString()]);
-		// DBService.insert("messages", [3,1,3,'Another test 2 :D',new Date().toLocaleString()]);
-		// DBService.insert("messages", [4,3,1,'Test 3 -> 1',new Date().toLocaleString()]);
-		// DBService.insert("messages", [5,3,1,'Another test 3 -> 1',new Date().toLocaleString()]);
-		// DBService.insert("messages", [6,1,2,'Testing again!',new Date().toLocaleString()]);
-
-		$state.go('login');
 	});
 })

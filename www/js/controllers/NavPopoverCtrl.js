@@ -1,7 +1,6 @@
 ﻿
-angular.module('app.navpopover', [])
-
-.factory('NavPopover', function ($ionicPopover) {
+//angular.module('app.navpopover', [])
+app.factory('NavPopover', function ($ionicPopover) {
 
     var p;
     $ionicPopover.fromTemplateUrl('templates/popover.html').then(function (popover) {
