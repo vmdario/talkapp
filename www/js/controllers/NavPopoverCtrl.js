@@ -9,7 +9,7 @@ app.factory('NavPopover', function ($ionicPopover) {
 
     return {
         open: function (events) {
-            p.show(events);
+            return p.show(events);
         },
         close: function () {
             p.hide();
@@ -60,6 +60,7 @@ app.factory('NavPopover', function ($ionicPopover) {
             utils.d(res);
             DBService.insert('contacts', [null, res.name, res.status, res.phoneNumber, res.picture])
             .then(function(res) {
+
                 $state.go('loading', {next: 'tabs.contacts'});
             }, function(err) {
                 utils.e(err.message);

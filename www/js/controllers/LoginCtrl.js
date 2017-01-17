@@ -84,6 +84,16 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 			utils.d("Success table contacts");
 		});
 
+		DBService.createTableIfNotExists("user", {
+			id: 'integer primary key',
+			name: 'varchar(30) not null',
+			status: 'varchar(30) default \'Available\'',
+			phone_number: 'char(20)',
+			picture: 'blob'
+		}).then(function(res) {
+			utils.d("Success table user");
+		});
+
 		$timeout(function() {
 			utils.d("Finding user");
 			DBService.query('SELECT * FROM user').then(function(res) {
@@ -98,17 +108,8 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 				$timeout(function() {
 					$scope.forwardPage();
 				}, 1000);
-			}, function(err) {
+			}).catch( function(err) {
 				// not found
-				DBService.createTable("user", {
-					id: 'integer primary key',
-					name: 'varchar(30) not null',
-					status: 'varchar(30) default \'Available\'',
-					phone_number: 'char(20)',
-					picture: 'blob'
-				}).then(function(res) {
-					utils.d("Success table user");
-				});
 
 				$scope.showModal().then(function (res) {
 					utils.d("Logging in new user");

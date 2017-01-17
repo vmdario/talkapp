@@ -1,8 +1,10 @@
 
-app.controller('ContactsTabCtrl', function ($scope, $state, NavPopover, $timeout, DBService) {
+app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $timeout, DBService) {
 
     $scope.openPopover = function (evt) {
-        NavPopover.open(evt);
+        NavPopover.open(evt).then(function(res){
+            $scope.loadContacts();
+        });
     };
     $scope.closePopover = function () {
         NavPopover.close();
@@ -21,6 +23,7 @@ app.controller('ContactsTabCtrl', function ($scope, $state, NavPopover, $timeout
     };
 
     $scope.loadContacts = function() {
+        $scope.contacts = [];
         DBService.query("SELECT * FROM contacts").then(function(res) {
             for(var i = 0; i < res.rows.length; ++i) {
                 $scope.contacts.push({
@@ -34,5 +37,5 @@ app.controller('ContactsTabCtrl', function ($scope, $state, NavPopover, $timeout
         });
     };
 
-    $scope.loadContacts()
+    $scope.loadContacts();
 });
