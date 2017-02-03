@@ -24,8 +24,14 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
     $scope.loadTalks = function() {
         Talks.getAllByLoggedUser()
         .then(function(res) {
-            console.log('-------------------------TalksTabCtrl');
             console.log(res);
+            res.data.forEach(function(talk) {
+                $scope.talks.push({
+                    id: talk.id,
+                    lastDate: talk.lastDate,
+                    contactName: talk.contactName
+                });
+            })
         }, function(err) {
             utils.e("Error: "+err.message);
         });
