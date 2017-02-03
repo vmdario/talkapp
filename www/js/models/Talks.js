@@ -15,7 +15,6 @@ app.service('Talks', ['ServerDB', '$http', 'Users', '$q', '$window', function(Se
 
 	this.getAllByLoggedUser = function () {
 		return Users.getLogged().then(function (res) {
-			console.log(res);
 			return ServerDB.get('/talk/user?id=' + res.rows[0].doc.id);
 		});
 	}
