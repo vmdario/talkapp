@@ -1,5 +1,5 @@
 
-<ion-view ng-controller="MessageDetailCtrl" view-title="{{contact_name}}">
+<ion-view ng-controller="TalkDetailCtrl" view-title="{{contact_name}}">
 
     <ion-nav-bar class="bar-positive">
         <ion-nav-back-button>
@@ -8,14 +8,14 @@
 
     <ion-nav-buttons>
         <p>
-            <a class="button icon icon-left ion-chevron-left" href="#/tab/messages">
+            <a class="button icon icon-left ion-chevron-left" href="#/tab/talks">
             </a>
         </p>
     </ion-nav-buttons>
 
-    <ion-content class="messages-detail">
+    <ion-content class="talks-detail">
         <div class="list">
-            <div class="item" ng-repeat="msg in messages">
+            <div class="item" ng-repeat="msg in talks">
                 <p>{{msg.message}}</p>
             </div>
         </div>

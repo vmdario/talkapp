@@ -1,6 +1,6 @@
 
 //angular.module('app.services', ['ionic', 'ngCordova', 'app.utils'])
-app.service('DBService', function($cordovaSQLite, $q, $ionicPlatform, utils) {
+app.service('DB', function($cordovaSQLite, $q, $ionicPlatform, utils) {
 
 	var db = null;
 
@@ -88,39 +88,34 @@ app.service('DBService', function($cordovaSQLite, $q, $ionicPlatform, utils) {
 		return q.promise;
 	};
 
-	this.query = this.executeSQL;
-})
-.factory('User', function () {
-	var user = {
-		isValid: false,
-		name: '',
-		status: '',
-		phoneNumber: '',
-		picture: null
-	}
-	return user;
-})
-.factory('Contacts', function($cordovaSQLite, DBService) {
-
-	return {
-		all: function() {
-			return DBService.query("SELECT * FROM contacts").then(function(res) {
-				return DBService.getAll(res);
-			});
-		},
-
-		add: function(cont) {
-			return DBService.insert("contacts", cont);
-		},
-
-		remove: function(id) {
-			return DBA.query("DELETE FROM contacts WHERE id = (?)", id);
-		},
-
-		update: function(origMember, editMember) {
-			var parameters = [editMember.id, editMember.name, origMember.id];
-			return DBA.query("UPDATE team SET id = (?), name = (?) WHERE id = (?)", parameters);
-		}
+	this.query = function (query, parameters) {
+		var _getAll = this.getAll;
+		return this.executeSQL(query, parameters).then(function(res) {
+			return _getAll(res);
+		})
 	}
 })
-;
+.service('ServerDB', ['$http', function($http){
+	var GLOBAL_PATH = 'https://rest-java-server.herokuapp.com';
+	
+	this.get = function (path) {
+		return $http({
+			url: GLOBAL_PATH + path,
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+	}
+
+	this.post = function(path, body) {
+		return $http({
+			url: GLOBAL_PATH + path,
+			method: 'POST',
+			data: body,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+	}
+}]);

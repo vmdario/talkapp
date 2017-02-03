@@ -1,6 +1,5 @@
 
-//angular.module('app.message-detail', ['app.services'])
-app.controller('MessageDetailCtrl', function ($scope, $stateParams, DBService, $timeout) {
+app.controller('TalkDetailCtrl', function ($scope, $stateParams, DBService, $timeout) {
 
 	$scope.contact_name = $stateParams.contactName;
 	$scope.messages = [];

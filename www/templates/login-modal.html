@@ -10,12 +10,20 @@
 			<input type="text" ng-model="data.name" required>
 		</label>
 		<label class="item item-input">
+			<span class="input-label">E-mail</span>
+			<input type="text" ng-model="data.email" required>
+		</label>
+		<label class="item item-input">
+			<span class="input-label">Password</span>
+			<input type="text" ng-model="data.password" required>
+		</label>
+		<label class="item item-input">
 			<span class="input-label">Status</span>
 			<input type="text" ng-model="data.status" required>
 		</label>
 		<label class="item item-input">
 			<span class="input-label">Phone number</span>
-			<input type="text" ng-model="data.phone_number" required>
+			<input type="text" ng-model="data.phoneNumber" required>
 		</label>
 		<div class="error-msg">
 			<p ng-class="empty_fields">You must fill out name, status and phone number!</p>

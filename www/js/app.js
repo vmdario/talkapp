@@ -29,12 +29,12 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 		  abstract: true,
 		  templateUrl: "templates/tabs.html"
 	  })
-	  .state('tabs.messages', {
-		  url: "/messages",
+	  .state('tabs.talks', {
+		  url: "/talks",
 		  views: {
-			  'messages-tab': {
-				  templateUrl: "templates/messages.html",
-				  controller: 'MessagesTabCtrl'
+			  'talks-tab': {
+				  templateUrl: "templates/talks.html",
+				  controller: 'TalksTabCtrl'
 			  }
 		  }
 	  })
@@ -47,9 +47,9 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 			  }
 		  }
 	  })
-	  .state('message-detail', {
-			url: "/message-detail",
-			templateUrl: "templates/message-detail.html",
+	  .state('talk-detail', {
+			url: "/talk-detail",
+			templateUrl: "templates/talk-detail.html",
 			params: {
 				contactId: null,
 				contactName: null
@@ -72,7 +72,7 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 		  templateUrl: 'templates/settings.html',
 		  controller: 'SettingsCtrl'
 	  });
-	$urlRouterProvider.otherwise("/tabs/messages");
+	$urlRouterProvider.otherwise("/tabs/talks");
 })
 
 .run(function ($ionicPlatform, $state) {

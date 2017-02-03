@@ -18,7 +18,7 @@ app.factory('NavPopover', function ($ionicPopover) {
 
 })
 
-.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, DBService, $state, $ionicPopup) {
+.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, $state, $ionicPopup) {
     
     $scope.close = function () {
         NavPopover.close();
@@ -58,13 +58,13 @@ app.factory('NavPopover', function ($ionicPopover) {
             ]
         }).then(function(res) {
             utils.d(res);
-            DBService.insert('contacts', [null, res.name, res.status, res.phoneNumber, res.picture])
-            .then(function(res) {
+            //DBService.insert('contacts', [null, res.name, res.status, res.phoneNumber, res.picture])
+            //.then(function(res) {
 
-                $state.go('loading', {next: 'tabs.contacts'});
-            }, function(err) {
-                utils.e(err.message);
-            });
+            //    $state.go('loading', {next: 'tabs.contacts'});
+            //}, function(err) {
+            //    utils.e(err.message);
+            //});
         });
     };
 

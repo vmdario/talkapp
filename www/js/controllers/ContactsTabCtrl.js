@@ -1,5 +1,5 @@
 
-app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $timeout, DBService) {
+app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $timeout, DB) {
 
     $scope.openPopover = function (evt) {
         NavPopover.open(evt).then(function(res){
@@ -24,7 +24,7 @@ app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $
 
     $scope.loadContacts = function() {
         $scope.contacts = [];
-        DBService.query("SELECT * FROM contacts").then(function(res) {
+        DB.query("SELECT * FROM contacts").then(function(res) {
             for(var i = 0; i < res.rows.length; ++i) {
                 $scope.contacts.push({
                     "id": res.rows.item(i).id,

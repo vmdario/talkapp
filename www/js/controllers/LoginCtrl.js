@@ -1,6 +1,6 @@
 
 //angular.module('app.login', ['app.services','app.utils'])
-app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $ionicPopup, $timeout, utils, $state, $ionicPlatform) {
+app.controller("LoginCtrl", function ($scope, $ionicHistory, DB, Users, $ionicPopup, $timeout, utils, $state, $ionicPlatform, ServerDB) {
 
 	$scope.empty_fields = 'hidden';
 
@@ -8,8 +8,10 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 	$scope.showModal = function () {
 		$scope.data = {
 			name: '',
+			email: '',
+			password: '',
 			status: '',
-			phone_number: '',
+			phoneNumber: '',
 			picture: null
 		};
 
@@ -23,8 +25,8 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 					text: '<b>Login</b>',
 					type: 'button-positive',
 					onTap: function(e) {
-						if (!$scope.data.name || !$scope.data.status || !$scope.data.phone_number) {
-							//don't allow the user to close unless he enters all fields
+						if (!$scope.data.name || !$scope.data.status || !$scope.data.phoneNumber) {
+							//don't allow the users to close unless he enters all fields
 							e.preventDefault();
 							$scope.empty_fields = 'empty-fields-error';
 						} else {
@@ -38,9 +40,17 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 	};
 
 	$scope.login = function(data) {
-		DBService.insert("user", [null, data.name, data.status, data.phone_number, data.picture])
-		.then(function (result) {
-			utils.d("Inserting successful");
+		Users.add({
+			_id: 'login_'+ data.name,
+			id: null,
+			name: data.name,
+			email: data.email, 
+			password: data.password, 
+			status: data.status, 
+			phoneNumber: data.phoneNumber, 
+			picture: data.picture
+		}).then(function (result) {
+			utils.d("Inserting user successful");
 
 			$timeout(function() {
 				$scope.forwardPage();
@@ -55,64 +65,87 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DBService, User, $i
 		$ionicHistory.nextViewOptions({
 			disableBack: true
 		});
-		$state.go('loading', {next: 'tabs.messages'});
+		$state.go('loading', {next: 'tabs.talks'});
 	};
 
-	// search database for user login
+	// search database for users login
 	$ionicPlatform.ready(function () {
 
 		// initializing sqlite dbs
-		DBService.init('talkapp.db');
+		/*DB.init('talkapp.db');
 
-		DBService.createTableIfNotExists('messages', {
+		DB.createTableIfNotExists("logged_user", {
 			id: 'integer primary key',
-			from_contact: 'integer',
-			to_contact: 'integer',
-			message: 'text',
-			date: 'char(21)'
-		}).then(function(res) {
-			utils.d("Success table messages");
+			name: 'varchar(30) not null unique',
+			email: 'varchar(30) not null unique',
+			password: 'varchar(30) not null',
+			status: 'varchar(30) default \'Available\'',
+			phoneNumber: 'char(20)',
+			picture: 'blob'
 		});
 
-		DBService.createTableIfNotExists('contacts', {
+		DB.createTableIfNotExists("users", {
 			id: 'integer primary key',
-			name: 'varchar(30) not null',
+			name: 'varchar(30) not null unique',
+			email: 'varchar(30) not null unique',
+			password: 'varchar(30) not null',
 			status: 'varchar(30) default \'Available\'',
 			phoneNumber: 'char(20)',
 			picture: 'blob'
 		}).then(function(res) {
+			utils.d("Success table users");
+		});
+
+		DB.createTableIfNotExists('contacts', {
+	 		user_id: 'bigint',  // user who has the contacts
+	 		user_contact_id: 'bigint',
+	 		'primary key': '(user_id,user_contact_id)',
+	 		'foreign key(user_id)': 'references users(id)',
+	 		'foreign key(user_contact_id)': 'references users(id)'
+	 	}).then(function(res) {
 			utils.d("Success table contacts");
 		});
 
-		DBService.createTableIfNotExists("user", {
-			id: 'integer primary key',
-			name: 'varchar(30) not null',
-			status: 'varchar(30) default \'Available\'',
-			phone_number: 'char(20)',
-			picture: 'blob'
-		}).then(function(res) {
-			utils.d("Success table user");
-		});
+		DB.createTableIfNotExists('talks', {
+	 		id: 'bigint primary key',
+	 		name: 'varchar(30) default null',
+	 		time: 'datetime',
+	 		user_one: 'bigint',
+	 		user_two: 'bigint',
+	 		'foreign key(user_one)': 'references users(id)',
+	 		'foreign key(user_two)': 'references users(id)'
+	 	});
+
+	 	DB.createTableIfNotExists('messages', {
+	 		id: 'bigint primary key',
+	 		created_date: 'datetime',
+	 		text: 'text not null',
+	 		talk_id: 'bigint',
+	 		user_id: 'bigint',
+	 		'foreign key(talk_id)': 'references talks(id)',
+	 		'foreign key(user_id)': 'references users(id)'
+	 	});*/
 
 		$timeout(function() {
-			utils.d("Finding user");
-			DBService.query('SELECT * FROM user').then(function(res) {
-				// user found
-				var p = res.rows.item(0);
-				User.name = p.name;
-				User.status = p.status;
-				User.phoneNumber = p.phone_number;
-				User.picture = p.picture;
-				User.isValid = true;
-
-				$timeout(function() {
+			utils.d("Finding users");
+			Users.getLogged().then(function(res) {
+				// users found
+				if(res.total_rows > 0) {
+					console.log('Logged user: ');
 					$scope.forwardPage();
-				}, 1000);
+
+				} else {
+					// not found
+					$scope.showModal().then(function (res) {
+						utils.d("Logging in new user");
+						$scope.login(res);
+					});
+				}
 			}).catch( function(err) {
 				// not found
-
+				console.log(err);
 				$scope.showModal().then(function (res) {
-					utils.d("Logging in new user");
+					utils.d("Logging in new users");
 					$scope.login(res);
 				});
 			});		

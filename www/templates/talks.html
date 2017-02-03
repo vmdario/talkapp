@@ -1,5 +1,5 @@
 
-<ion-view view-title="Messages">
+<ion-view view-title="Talks">
 
     <ion-nav-bar class="bar-positive">
         <ion-nav-back-button>
@@ -8,11 +8,11 @@
 
     <ion-content>
         <div class="list">
-        	<a class="item item-avatar" href="#/message-detail" ng-click="showMessageDetails(message.contact_name)" ng-repeat="message in messages | orderBy: 'contact_name'">
+        	<a class="item item-avatar" href="#/talk-detail" ng-click="showTalkDetails(talk.contact_name)" ng-repeat="talk in talks">
         		<img src="img/noavatar.png">
-        		<h2 class="contact-name">{{message.contact_name}}</h2>
-                <p>{{message.message}}</p>
-        		<p class="message-date">{{message.date}}</p>
+        		<h2 class="contact-name">{{talk.contact_name}}</h2>
+                <p>{{talk.talk}}</p>
+        		<p class="talk-date">{{talk.date}}</p>
         	</a>
         </div>
     </ion-content>
