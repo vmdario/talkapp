@@ -1,16 +1,27 @@
 
-app.service('Talks', ['ServerDB', '$http', 'Users', '$q', '$window', function(ServerDB, $http, Users, $q, $window){
+app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, Users, $q, $window){
 
 	var db = $window.PouchDB('talks');
 	
-	this.add = function(cont) {
-		//return DB.insert("talks", cont);
-		return $q.when(db.put(cont));
+	// data = { user1: 1, user2: 2 }
+	this.add = function(data) {
+		return $q.when(db.put(data)).then(function() {
+			return ServerDB.post('/talk/add', data);
+		}, function(err) {
+			console.log(err);
+		});
 	}
 
 	this.remove = function(id) {
-		//return DB.query("DELETE FROM talks WHERE id = (?)", id);
-		return $q.when(db.remove(id));
+		return $q.when(db.remove(id)).then(function() {
+			return ServerDB.get('/talk/delete?id='+ id);
+		}, function(err) {
+			console.log(err);
+		});
+	}
+
+	this.getById = function (id) {
+		return ServerDB.get('/talk?id='+ id);
 	}
 
 	this.getAllByLoggedUser = function () {

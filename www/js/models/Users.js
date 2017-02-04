@@ -27,6 +27,8 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 	}
 
 	this.remove = function(id) {
-		return $q.when(db.remove(id));
+		return $q.when(db.remove(id)).then(function (res) {
+			return ServerDB.get('/user/delete?id='+ id);
+		})
 	}
 }]);

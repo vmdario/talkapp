@@ -1,21 +1,47 @@
 
-app.controller('TalkDetailCtrl', function ($scope, $stateParams, DBService, $timeout) {
+app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users',
+    function ($scope, $stateParams, Talks, Messages, Users) {
 
-	$scope.contact_name = $stateParams.contactName;
-	$scope.messages = [];
+	$scope.talk = {};
+    $scope.contactName = $stateParams.contactName;
+    $scope.messageToAdd = '';
 
-	$scope.loadMessages = function() {
-		DBService.query("SELECT message, date FROM messages WHERE to_contact = ? ORDER BY date DESC", [$stateParams.contactId], function(res) {
-            for(var i = 0; i < res.length; ++i) {
-                $scope.messages.push({
-                    "message": res[i].message,
-                    "date": res[i].date
-                });
-            }
-        }, function(err) {
-            console.log("Error: "+err.message);
+    $scope.addMessage = function() {
+        // Add new message in server
+        Users.getLogged().then(function(res) {
+            Messages.add({
+                text: $scope.messageToAdd,
+                talkId: $scope.talk.id,
+                userId: res.rows[0].doc.id
+            }).then(function (r) {
+                // updating scope
+                $scope.reloadTalk();
+            }, function(err) {
+                console.log(err);
+            })
         });
-	};
+    }
 
-	$scope.loadMessages();
-});
+    $scope.reloadTalk = function() {
+        Talks.getById($stateParams.talkId).then(function(res) {
+            //console.log(res)
+            $scope.talk = {
+                id: res.data.id,
+                lastDate: res.data.lastDate,
+                messages: res.data.messageCollection
+            }
+            $scope.messageToAdd = '';
+
+            for(var m in $scope.talk.messages) {
+                // positioning messages on screen
+                if($scope.talk.messages[m].userId.name === $scope.contactName) {
+                    $scope.talk.messages[m].style = { 'margin-left': '7px' };
+                } else {
+                    $scope.talk.messages[m].style = { 'margin-left': 'auto', 'background-color': '#e6fff2' };
+                }
+                //console.log($scope.talk.messages[m])
+            }
+        });
+    }
+    $scope.reloadTalk();
+}]);

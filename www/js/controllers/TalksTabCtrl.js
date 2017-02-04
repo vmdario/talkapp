@@ -1,5 +1,6 @@
 
-app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Talks, $state, $ionicHistory) {
+app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Talks,
+    $state, $ionicHistory, Users) {
 
     // Popover management
     $scope.openPopover = function (evt) {
@@ -11,31 +12,35 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
 
     $scope.talks = [];
 
-    $scope.showTalkDetails = function (contact_name) {
-//        var index = -1;
-//        $scope.talks.forEach(function(talk) {
-//            if (contact_name === talk.contact_name) {
-//                index = talk.to_contact;
-//            }
-//        });
-//        $state.go('talk-detail', {contactId: index, contactName: contact_name});
+    $scope.showTalkDetails = function (id, contactName) {
+        $state.go('talk-detail', { talkId: id, contactName: contactName });
     };
 
-    $scope.loadTalks = function() {
-        Talks.getAllByLoggedUser()
-        .then(function(res) {
-            console.log(res);
+
+    Talks.getAllByLoggedUser()
+    .then(function(res) {
+
+        Users.getLogged().then(function(r) {
+            var loggedUser = r.rows[0].doc;
+
             res.data.forEach(function(talk) {
+                var contact = {};
+                if(talk.user1.id === loggedUser.id) {
+                    contact = talk.user2;
+                } else {
+                    contact = talk.user1;
+                }
+
                 $scope.talks.push({
                     id: talk.id,
                     lastDate: talk.lastDate,
-                    contactName: talk.contactName
+                    name: contact.name,
+                    picture: contact.picture
                 });
-            })
-        }, function(err) {
-            utils.e("Error: "+err.message);
+            });
         });
-    };
+    }, function(err) {
+        utils.e("Error: "+err.message);
+    });
 
-    $scope.loadTalks();
 });

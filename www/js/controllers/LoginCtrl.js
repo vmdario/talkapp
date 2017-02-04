@@ -71,61 +71,6 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DB, Users, $ionicPo
 	// search database for users login
 	$ionicPlatform.ready(function () {
 
-		// initializing sqlite dbs
-		/*DB.init('talkapp.db');
-
-		DB.createTableIfNotExists("logged_user", {
-			id: 'integer primary key',
-			name: 'varchar(30) not null unique',
-			email: 'varchar(30) not null unique',
-			password: 'varchar(30) not null',
-			status: 'varchar(30) default \'Available\'',
-			phoneNumber: 'char(20)',
-			picture: 'blob'
-		});
-
-		DB.createTableIfNotExists("users", {
-			id: 'integer primary key',
-			name: 'varchar(30) not null unique',
-			email: 'varchar(30) not null unique',
-			password: 'varchar(30) not null',
-			status: 'varchar(30) default \'Available\'',
-			phoneNumber: 'char(20)',
-			picture: 'blob'
-		}).then(function(res) {
-			utils.d("Success table users");
-		});
-
-		DB.createTableIfNotExists('contacts', {
-	 		user_id: 'bigint',  // user who has the contacts
-	 		user_contact_id: 'bigint',
-	 		'primary key': '(user_id,user_contact_id)',
-	 		'foreign key(user_id)': 'references users(id)',
-	 		'foreign key(user_contact_id)': 'references users(id)'
-	 	}).then(function(res) {
-			utils.d("Success table contacts");
-		});
-
-		DB.createTableIfNotExists('talks', {
-	 		id: 'bigint primary key',
-	 		name: 'varchar(30) default null',
-	 		time: 'datetime',
-	 		user_one: 'bigint',
-	 		user_two: 'bigint',
-	 		'foreign key(user_one)': 'references users(id)',
-	 		'foreign key(user_two)': 'references users(id)'
-	 	});
-
-	 	DB.createTableIfNotExists('messages', {
-	 		id: 'bigint primary key',
-	 		created_date: 'datetime',
-	 		text: 'text not null',
-	 		talk_id: 'bigint',
-	 		user_id: 'bigint',
-	 		'foreign key(talk_id)': 'references talks(id)',
-	 		'foreign key(user_id)': 'references users(id)'
-	 	});*/
-
 		$timeout(function() {
 			utils.d("Finding users");
 			Users.getLogged().then(function(res) {
@@ -136,17 +81,17 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DB, Users, $ionicPo
 
 				} else {
 					// not found
-					$scope.showModal().then(function (res) {
+					$scope.showModal().then(function (r) {
 						utils.d("Logging in new user");
-						$scope.login(res);
+						$scope.login(r);
 					});
 				}
 			}).catch( function(err) {
 				// not found
 				console.log(err);
-				$scope.showModal().then(function (res) {
+				$scope.showModal().then(function (r) {
 					utils.d("Logging in new users");
-					$scope.login(res);
+					$scope.login(r);
 				});
 			});		
 		}, 800);

@@ -7,7 +7,7 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 .config(function ($stateProvider, $urlRouterProvider, $logProvider,$ionicConfigProvider) {
 
 	$logProvider.debugEnabled(true);
-	$ionicConfigProvider.backButton.text('').icon('ion-ios7-arrow-left');
+	$ionicConfigProvider.backButton.text('');
 
 	$stateProvider
 	  .state('loading', {
@@ -51,7 +51,7 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 			url: "/talk-detail",
 			templateUrl: "templates/talk-detail.html",
 			params: {
-				contactId: null,
+				talkId: null,
 				contactName: null
 			}
 	  })

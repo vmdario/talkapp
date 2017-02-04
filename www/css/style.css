@@ -4,6 +4,10 @@
 	display: none;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 .modal .popup {
 	width: 420px;
 	max-width: 95%;
@@ -60,17 +64,56 @@ h2.contact-name {
 	font-weight: bold;
 }
 
-p.message-date {
+p.talk-date {
 	font-size: 10px;
 	color: rgb(150,150,150);
 }
 
-.messages-detail {
+/* Talks detail */
+.talks-detail {
 	background-color: rgb(240,240,240);
 }
 
-.messages-detail .list .item {
+.talks-detail .list {
+
+}
+
+.talks-detail .item {
 	border-radius: 10px;
-	margin: 10px 7px;
-	width: 70%;
+	margin-top: 7px;
+	margin-right: 7px;
+	padding: 4px 8px 4px 8px;
+	min-width: 30%;
+	max-width: 70%;
+}
+
+.talks-detail .message-user {
+	color: blue;
+}
+
+.talks-detail .message-date {
+	font-size: 10px;
+	color: rgb(150,150,150);
+	text-align: right;
+}
+
+.talks-detail .message-text {
+	white-space: pre-wrap;
+}
+
+.add-message-bar {
+	background-color: rgb(240,240,240);
+	border-radius: 20px;
+}
+
+.button-send, .button-send:hover {
+	border-radius: 50%;
+	background-color: #35d;
+	color: white;
+	width: 40px;
+	height: 40px;
+}
+
+.shadow {
+	box-shadow: 2px 2px 3px grey;
 }
