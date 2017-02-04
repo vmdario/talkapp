@@ -1,15 +1,10 @@
 
-app.controller('ContactInfoCtrl', function ($scope, $stateParams, DBService) {
+app.controller('ContactInfoCtrl', ['$scope', '$stateParams','Users', 
+	function ($scope, $stateParams,Users) {
 
 	$scope.contact = {};
 
-	// retrieve contact info
-	DBService.query("SELECT * FROM contacts WHERE id = ?", [$stateParams.contactId])
-	.then(function(result) {
-		// success
-		$scope.contact = result.rows.item(0);
-		//console.log($scope.contact);
-	}, function (err) {
-		console.log("Error in selecting contact...");
+	Users.getById($stateParams.contactId).then(function(res) {
+		$scope.contact = res;
 	});
-});
+}]);

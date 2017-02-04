@@ -2,9 +2,17 @@
 app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, ServerDB) {
 
 	var db = $window.PouchDB('users');
-	
+
 	this.getLogged = function () {
-		return $q.when(db.allDocs({ startkey: 'login', include_docs: true }));
+		return $q.when(db.allDocs({ startkey: 'login', include_docs: true })).then(function(res) {
+			return res.rows[0].doc;
+		});
+	}
+
+	this.getById = function(id) {
+		return $q.when(db.get(''+id)).then(function(res) {
+			return res.rows[0].doc;
+		})
 	}
 
 	this.all = function() {

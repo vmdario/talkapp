@@ -1,24 +1,24 @@
 
 <ion-view title="Contacts">
 
-  <ion-nav-bar class="bar-positive">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-    </ion-nav-bar>
+	<ion-nav-bar class="bar-positive">
+		<ion-nav-back-button>
+		</ion-nav-back-button>
+	</ion-nav-bar>
 
-  <ion-content>
-    <div class="list">
-      <a class="item item-avatar" href="" ng-repeat="contact in contacts | orderBy:'name'" ng-click="showContact(contact.name)">
-        <img src="img/noavatar.png">
-        <h2 class="contact-name">{{contact.name}}</h2>
-        <p>{{contact.status}}</p>
-      </a>
-    </div>
-  </ion-content>
+	<ion-content>
+		<ion-list>
+		<a class="item item-avatar" href="" ng-repeat="contact in contacts | orderBy:'name'" ng-click="showContact(contact.id)">
+				<img src="img/noavatar.png">
+				<h2 class="contact-name">{{ contact.name }}</h2>
+				<p>{{ contact.status }}</p>
+			</a>
+		</ion-list>
+	</ion-content>
 
-  <ion-nav-buttons side="right">
-    <button class="button icon ion-navicon-round" ng-click="openPopover($event);">
-    </button>
-  </ion-nav-buttons>
+	<ion-nav-buttons side="right">
+		<button class="button icon ion-navicon-round" ng-click="openPopover($event);">
+		</button>
+	</ion-nav-buttons>
 
 </ion-view>

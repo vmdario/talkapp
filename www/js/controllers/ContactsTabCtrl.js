@@ -1,9 +1,10 @@
 
-app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $timeout) {
+app.controller('ContactsTabCtrl', ['$scope', 'utils', '$state', 'NavPopover', '$timeout', 'Talks','Users',
+    function ($scope, utils, $state, NavPopover, $timeout, Talks, Users) {
 
     $scope.openPopover = function (evt) {
         NavPopover.open(evt).then(function(res){
-            $scope.loadContacts();
+            $scope.reloadContacts();
         });
     };
     $scope.closePopover = function () {
@@ -12,25 +13,32 @@ app.controller('ContactsTabCtrl', function ($scope, utils, $state, NavPopover, $
 
     $scope.contacts = [];
 
-    $scope.showContact = function(name) {
-        var index = -1;
-        $scope.contacts.forEach(function(contact) {
-            if (name === contact.name) {
-                index = contact.id;
-            }
-        });
-        $state.go('contact-info', {contactId: index});
+    $scope.showContact = function(id) {
+        $state.go('contact-info', {contactId: id});
     };
 
-    DB.query("SELECT * FROM contacts").then(function(res) {
-        for(var i = 0; i < res.rows.length; ++i) {
-            $scope.contacts.push({
-                "id": res.rows.item(i).id,
-                "name": res.rows.item(i).name,
-                "status": res.rows.item(i).status
-            });
-        }
-    }).catch(function(err) {
-        utils.e("Error: "+err.message);
-    });
-});
+    $scope.reloadContacts = function() {
+        Talks.getAllByLoggedUser().then(function(res) {
+            res.data.forEach(function(obj) {
+                
+                $scope.contacts = [];
+                Users.getLogged().then(function(user) {
+                    var contact = null;
+                    if(user.id === obj.user1.id) {
+                        contact = obj.user2;
+                    } else {
+                        contact = obj.user1;
+                    }
+                    //console.log(contact)
+                    $scope.contacts.push({
+                        id: contact.id,
+                        name: contact.name,
+                        status: contact.status,
+                        picture: contact.picture
+                    })
+                });
+            })
+        })
+    }
+    $scope.reloadContacts();
+}]);

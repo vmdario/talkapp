@@ -5,8 +5,16 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 	
 	// data = { user1: 1, user2: 2 }
 	this.add = function(data) {
-		return $q.when(db.put(data)).then(function() {
-			return ServerDB.post('/talk/add', data);
+		return ServerDB.post('/talk/add', data).then(function(res) {
+			//console.log(res);
+			var d = {
+				_id: '' + res.data.id,
+				id: res.data.id,
+				lastDate: res.data.lastDate,
+				user1: res.data.user1,
+				user2: res.data.user2
+			}
+			return $q.when(db.post(d));
 		}, function(err) {
 			console.log(err);
 		});
@@ -21,12 +29,23 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 	}
 
 	this.getById = function (id) {
-		return ServerDB.get('/talk?id='+ id);
+		return $q.when(db.get('' + id)).then(null, function(err) {
+			//console.log(err);
+			return ServerDB.get('/talk?id='+ id).then(function (res) {
+				// adding talk in local db
+				//console.log(res.data)
+				return $q.when(db.post(res.data)).then(function(r) {
+					return res.data;
+				});
+			}, function (e) {
+				console.log(e)
+			});
+		})
 	}
 
 	this.getAllByLoggedUser = function () {
 		return Users.getLogged().then(function (res) {
-			return ServerDB.get('/talk/user?id=' + res.rows[0].doc.id);
+			return ServerDB.get('/talk/user?id=' + res.id);
 		});
 	}
 }]);

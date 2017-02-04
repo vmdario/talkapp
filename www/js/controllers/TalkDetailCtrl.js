@@ -1,6 +1,6 @@
 
-app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users',
-    function ($scope, $stateParams, Talks, Messages, Users) {
+app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users','$ionicScrollDelegate',
+    function ($scope, $stateParams, Talks, Messages, Users, $ionicScrollDelegate) {
 
 	$scope.talk = {};
     $scope.contactName = $stateParams.contactName;
@@ -12,10 +12,12 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
             Messages.add({
                 text: $scope.messageToAdd,
                 talkId: $scope.talk.id,
-                userId: res.rows[0].doc.id
+                userId: res.id
             }).then(function (r) {
                 // updating scope
                 $scope.reloadTalk();
+                // Make the window scroll to the bottom
+                $ionicScrollDelegate.scrollBottom();
             }, function(err) {
                 console.log(err);
             })
@@ -26,9 +28,9 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
         Talks.getById($stateParams.talkId).then(function(res) {
             //console.log(res)
             $scope.talk = {
-                id: res.data.id,
-                lastDate: res.data.lastDate,
-                messages: res.data.messageCollection
+                id: res.id,
+                lastDate: res.lastDate,
+                messages: res.messageCollection
             }
             $scope.messageToAdd = '';
 
@@ -41,6 +43,7 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
                 }
                 //console.log($scope.talk.messages[m])
             }
+            $ionicScrollDelegate.scrollBottom();
         });
     }
     $scope.reloadTalk();

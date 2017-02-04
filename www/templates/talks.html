@@ -8,7 +8,7 @@
 
     <ion-content>
         <div class="list">
-        	<a class="item item-avatar" href="#/talk-detail" ng-click="showTalkDetails(talk.id, talk.name)" ng-repeat="talk in talks">
+        	<a class="item item-avatar" href="#/talk-detail" ng-click="showTalkDetails(talk.id, talk.name)" ng-repeat="talk in talks | orderBy:'name'">
         		<img src="img/noavatar.png">
         		<h2 class="contact-name">{{ talk.name }}</h2>
         		<p class="talk-date">{{ talk.lastDate | date:'dd/MM/yyyy hh:mm' }}</p>

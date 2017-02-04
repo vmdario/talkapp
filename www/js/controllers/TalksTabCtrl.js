@@ -21,11 +21,10 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
     .then(function(res) {
 
         Users.getLogged().then(function(r) {
-            var loggedUser = r.rows[0].doc;
 
             res.data.forEach(function(talk) {
                 var contact = {};
-                if(talk.user1.id === loggedUser.id) {
+                if(talk.user1.id === r.id) {
                     contact = talk.user2;
                 } else {
                     contact = talk.user1;

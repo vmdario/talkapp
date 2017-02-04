@@ -58,13 +58,6 @@ app.factory('NavPopover', function ($ionicPopover) {
             ]
         }).then(function(res) {
             utils.d(res);
-            //DBService.insert('contacts', [null, res.name, res.status, res.phoneNumber, res.picture])
-            //.then(function(res) {
-
-            //    $state.go('loading', {next: 'tabs.contacts'});
-            //}, function(err) {
-            //    utils.e(err.message);
-            //});
         });
     };
 
