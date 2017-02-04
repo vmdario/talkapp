@@ -1,10 +1,14 @@
 
-app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users','$ionicScrollDelegate',
-    function ($scope, $stateParams, Talks, Messages, Users, $ionicScrollDelegate) {
+app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users','$ionicScrollDelegate','$interval',
+    function ($scope, $stateParams, Talks, Messages, Users, $ionicScrollDelegate,$interval) {
 
 	$scope.talk = {};
     $scope.contactName = $stateParams.contactName;
     $scope.messageToAdd = '';
+
+    $scope.updateMessages = $interval(function() {
+        $scope.reloadTalk();
+    }, 8000);
 
     $scope.addMessage = function() {
         // Add new message in server
@@ -14,8 +18,8 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
                 talkId: $scope.talk.id,
                 userId: res.id
             }).then(function (r) {
-                // updating scope
                 $scope.reloadTalk();
+                $scope.messageToAdd = '';
                 // Make the window scroll to the bottom
                 $ionicScrollDelegate.scrollBottom();
             }, function(err) {
@@ -32,7 +36,6 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
                 lastDate: res.lastDate,
                 messages: res.messageCollection
             }
-            $scope.messageToAdd = '';
 
             for(var m in $scope.talk.messages) {
                 // positioning messages on screen
@@ -46,5 +49,10 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
             $ionicScrollDelegate.scrollBottom();
         });
     }
-    $scope.reloadTalk();
+    
+    $scope.$on("$ionicView.beforeLeave", function(event, data){
+        // Make sure that the interval is destroyed too
+        $interval.cancel($scope.updateMessages);
+        console.log('Canceling updateMessages')
+    });
 }]);

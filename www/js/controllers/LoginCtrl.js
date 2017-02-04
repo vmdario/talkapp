@@ -75,7 +75,7 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, DB, Users, $ionicPo
 			utils.d("Finding users");
 			Users.getLogged().then(function(res) {
 				// users found
-				if(res.total_rows > 0) {
+				if(res) {
 					console.log('Logged user: ');
 					$scope.forwardPage();
 
