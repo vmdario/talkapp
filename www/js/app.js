@@ -96,4 +96,4 @@ var app = angular.module('app', ['ionic', 'ngCordova'])
 	});
 
 	$state.go('loading', {next: 'login'});
-})
+});

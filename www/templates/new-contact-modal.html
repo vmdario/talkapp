@@ -10,17 +10,8 @@
 			<input type="text" ng-model="data.name" required>
 		</label>
 		<label class="item item-input">
-			<span class="input-label">Status</span>
-			<select ng-model="data.status" required>
-				<option value="Available" selected="true">Available</option>
-				<option value="Away" >Away</option>
-				<option value="Working" >Working</option>
-				<option value="Offline">Offline</option>
-			</select>
-		</label>
-		<label class="item item-input">
 			<span class="input-label">Phone number</span>
-			<input type="text" ng-model="data.phoneNumber" required>
+			<input type="text" ng-model="data.phoneNumber">
 		</label>
 		<div class="error-msg">
 			<p ng-class="empty_fields">You must fill out name, status and phone number!</p>

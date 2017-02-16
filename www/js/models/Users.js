@@ -5,18 +5,41 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 
 	this.getLogged = function () {
 		return $q.when(db.allDocs({ startkey: 'login', include_docs: true })).then(function(res) {
+			if(res.total_rows === 0) {
+				return null;
+			}
 			return res.rows[0].doc;
 		});
 	}
 
 	this.getById = function(id) {
-		return $q.when(db.get(''+id)).then(function(res) {
+
+		return $q.when(db.allDocs({ startkey: id.toString(), include_docs: true })).then(function(res) {
+			if(res.total_rows === 0) {
+				// Get from server
+				return ServerDB.get('/user?id=' + id).then(function(r) {
+					return $q.when(db.put(r.data)).then(function() {
+						return r.data;
+					});
+				});
+			}
 			return res.rows[0].doc;
-		})
+		});
 	}
 
-	this.all = function() {
-		return $q.when(db.allDocs());
+	this.getByName = function(name) {
+		// Get from server
+		return ServerDB.get('/user/name/' + encodeURIComponent(name) + '/').then(function(r) {
+			if(!r.data) {
+				return null;
+			}
+			r.data._id = r.data.id + '_' + r.data.name;
+			return $q.when(db.put(r.data)).then(function() {
+				return r.data;
+			});
+		}, function(err) {
+			return err;
+		});
 	}
 
 	this.add = function(user) {
@@ -34,9 +57,4 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 		});
 	}
 
-	this.remove = function(id) {
-		return $q.when(db.remove(id)).then(function (res) {
-			return ServerDB.get('/user/delete?id='+ id);
-		})
-	}
 }]);

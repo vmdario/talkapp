@@ -1,6 +1,6 @@
 
 app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Talks,
-    $state, $ionicHistory, Users) {
+    $state, $ionicHistory, Users, LoadingPopup) {
 
     // Popover management
     $scope.openPopover = function (evt) {
@@ -16,10 +16,9 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
         $state.go('talk-detail', { talkId: id, contactName: contactName });
     };
 
+    LoadingPopup.show();
 
-    Talks.getAllByLoggedUser()
-    .then(function(res) {
-
+    Talks.getAllByLoggedUser().then(function(res) {
         Users.getLogged().then(function(r) {
 
             res.data.forEach(function(talk) {
@@ -37,9 +36,11 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
                     picture: contact.picture
                 });
             });
-        });
+        })
     }, function(err) {
         utils.e("Error: "+err.message);
+    }).then(function(w) {
+        LoadingPopup.close();
     });
 
 });

@@ -1,6 +1,7 @@
 
 app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Users','$ionicScrollDelegate','$interval',
-    function ($scope, $stateParams, Talks, Messages, Users, $ionicScrollDelegate,$interval) {
+    'LoadingPopup',
+    function ($scope, $stateParams, Talks, Messages, Users, $ionicScrollDelegate,$interval, LoadingPopup) {
 
 	$scope.talk = {};
     $scope.contactName = $stateParams.contactName;
@@ -11,6 +12,7 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
     }, 8000);
 
     $scope.addMessage = function() {
+
         // Add new message in server
         Users.getLogged().then(function(res) {
             Messages.add({
@@ -28,7 +30,10 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
         });
     }
 
+    LoadingPopup.show();
+
     $scope.reloadTalk = function() {
+        
         Talks.getById($stateParams.talkId).then(function(res) {
             //console.log(res)
             $scope.talk = {
@@ -47,6 +52,8 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
                 //console.log($scope.talk.messages[m])
             }
             $ionicScrollDelegate.scrollBottom();
+        }).then(function() {
+            LoadingPopup.close();
         });
     }
     

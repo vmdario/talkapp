@@ -1,6 +1,6 @@
 
-//angular.module('app.login', ['app.services','app.utils'])
-app.controller("LoginCtrl", function ($scope, $ionicHistory, DB, Users, $ionicPopup, $timeout, utils, $state, $ionicPlatform, ServerDB) {
+app.controller("LoginCtrl", function ($scope, $ionicHistory, Users, $ionicPopup, $timeout, utils, $state,
+	$ionicPlatform) {
 
 	$scope.empty_fields = 'hidden';
 

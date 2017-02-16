@@ -18,7 +18,7 @@ app.factory('NavPopover', function ($ionicPopover) {
 
 })
 
-.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, $state, $ionicPopup) {
+.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, $state, ErrorPopup, $ionicPopup, Users) {
     
     $scope.close = function () {
         NavPopover.close();
@@ -45,7 +45,7 @@ app.factory('NavPopover', function ($ionicPopover) {
                     text: '<b>Save</b>',
                     type: 'button-positive',
                     onTap: function(e) {
-                        if (!$scope.data.name || !$scope.data.status || !$scope.data.phoneNumber) {
+                        if (!$scope.data.name) {
                             //don't allow the user to close unless he enters all fields
                             e.preventDefault();
                             $scope.empty_fields = 'empty-fields-error';
@@ -57,9 +57,30 @@ app.factory('NavPopover', function ($ionicPopover) {
                 }
             ]
         }).then(function(res) {
-            utils.d(res);
+            // searching user to be added
+            Users.getByName(res.name).then(function(r) {
+                console.log(r);
+                if(!r || r.error || !r.data) {
+                    ErrorPopup.show('Error', 'Contact not found');
+                } else {
+                    Users.getLogged().then(function(user) {
+                        if(user.name === res.name) {
+                            ErrorPopup.show('Error', 'Contact name can\'t be same as logged user');
+                        } else {
+
+                        }
+                    });
+                }
+            });
         });
     };
+
+    $scope.showErrorPopup = function(title, msg) {
+        $ionicPopup.alert({
+            template: msg,
+            title: title
+        });
+    }
 
     $scope.settings = function() {
         $state.go('settings');

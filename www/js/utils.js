@@ -11,11 +11,11 @@ app.service('utils', function ($log, $window) {
 	    }
 	    str += '}';
 	    return str;
-	}
+	};
 
 	this.dObj = function (obj) {
 		$log.debug(_objToString(obj));
-	}
+	};
 	
 	this.d = function (msg) {
 		$log.debug(JSON.stringify(msg));
