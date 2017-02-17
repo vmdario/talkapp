@@ -4,7 +4,7 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 	var db = $window.PouchDB('users');
 
 	this.getLogged = function () {
-		return $q.when(db.allDocs({ startkey: 'login', include_docs: true })).then(function(res) {
+		return $q.when(db.allDocs({ endkey: 'login', include_docs: true })).then(function(res) {
 			if(res.total_rows === 0) {
 				return null;
 			}
@@ -34,8 +34,13 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 				return null;
 			}
 			r.data._id = r.data.id + '_' + r.data.name;
-			return $q.when(db.put(r.data)).then(function() {
+			return $q.when(db.put(r.data)).then(function(j) {
 				return r.data;
+			}, function(e) {
+				if(e.name === 'conflict') {
+					return r.data;
+				}
+				return e;
 			});
 		}, function(err) {
 			return err;
@@ -46,14 +51,13 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 		console.log('ServerDB adding');
 		return ServerDB.post('/user/add', user).then(function(res) {
 			// fetch this user
-			return ServerDB.get('/user/email/'+ encodeURIComponent(user.email) + '/').then(function(r) {
+			return ServerDB.get('/user/name/'+ encodeURIComponent(user.name) + '/').then(function(r) {
 				var u = Object.assign(user, r.data);
 				//console.log(u);
-				return $q.when(db.put(u));
+				return $q.when(db.put(u)).then(function(){}, function(){});
 			});
 		}, function(err) {
 			console.log(err);
-			return err;
 		});
 	}
 

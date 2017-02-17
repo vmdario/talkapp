@@ -30,16 +30,14 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
         });
     }
 
-    LoadingPopup.show();
-
     $scope.reloadTalk = function() {
         
-        Talks.getById($stateParams.talkId).then(function(res) {
+        return Talks.getById($stateParams.talkId).then(function(res) {
             //console.log(res)
             $scope.talk = {
                 id: res.id,
                 lastDate: res.lastDate,
-                messages: res.messageCollection
+                messages: res.messageCollection || []
             }
 
             for(var m in $scope.talk.messages) {
@@ -52,8 +50,6 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
                 //console.log($scope.talk.messages[m])
             }
             $ionicScrollDelegate.scrollBottom();
-        }).then(function() {
-            LoadingPopup.close();
         });
     }
     
@@ -61,5 +57,10 @@ app.controller('TalkDetailCtrl', ['$scope','$stateParams','Talks','Messages','Us
         // Make sure that the interval is destroyed too
         $interval.cancel($scope.updateMessages);
         console.log('Canceling updateMessages')
+    });
+
+    LoadingPopup.show();
+    $scope.reloadTalk().then(function() {
+        LoadingPopup.close();
     });
 }]);

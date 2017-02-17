@@ -10,7 +10,7 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 			var d = {
 				_id: '' + res.data.id,
 				id: res.data.id,
-				lastDate: res.data.lastDate,
+				lastDate: new Date(),
 				user1: res.data.user1,
 				user2: res.data.user2
 			}
@@ -29,7 +29,9 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 	}
 
 	this.getById = function (id) {
-		return $q.when(db.get('' + id)).then(null, function(err) {
+		return $q.when(db.get('' + id)).then(function(res) {
+			return res;
+		}, function(err) {
 			//console.log(err);
 			return ServerDB.get('/talk?id='+ id).then(function (res) {
 				// adding talk in local db
@@ -37,15 +39,19 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 				return $q.when(db.post(res.data)).then(function(r) {
 					return res.data;
 				});
-			}, function (e) {
-				console.log(e)
 			});
-		})
+		});
 	}
 
 	this.getAllByLoggedUser = function () {
 		return Users.getLogged().then(function (res) {
-			return ServerDB.get('/talk/user?id=' + res.id);
+			return ServerDB.get('/talk/user?id=' + res.id).then(function(r) {
+				r.data.forEach(function(talk) {
+					talk._id = '' + talk.id;
+					db.put(talk).then(function(){}, function(e){console.log(e)});
+				});
+				return r;
+			});
 		});
 	}
 }]);

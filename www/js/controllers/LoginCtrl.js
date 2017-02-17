@@ -1,6 +1,6 @@
 
 app.controller("LoginCtrl", function ($scope, $ionicHistory, Users, $ionicPopup, $timeout, utils, $state,
-	$ionicPlatform) {
+	$ionicPlatform, IdGen) {
 
 	$scope.empty_fields = 'hidden';
 
@@ -40,9 +40,10 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, Users, $ionicPopup,
 	};
 
 	$scope.login = function(data) {
+		var id = IdGen.generateId();
 		Users.add({
-			_id: 'login_'+ data.name,
-			id: null,
+			_id: id + '_' + data.name + '_' + data.email + '_login',
+			id: id,
 			name: data.name,
 			email: data.email, 
 			password: data.password, 

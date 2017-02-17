@@ -18,7 +18,7 @@ app.factory('NavPopover', function ($ionicPopover) {
 
 })
 
-.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, $state, ErrorPopup, $ionicPopup, Users) {
+.controller('NavPopoverCtrl', function ($scope, utils, NavPopover, $state, ErrorPopup, $ionicPopup, Users, $rootScope, Talks) {
     
     $scope.close = function () {
         NavPopover.close();
@@ -60,27 +60,27 @@ app.factory('NavPopover', function ($ionicPopover) {
             // searching user to be added
             Users.getByName(res.name).then(function(r) {
                 console.log(r);
-                if(!r || r.error || !r.data) {
+                if(!r || r.error) {
                     ErrorPopup.show('Error', 'Contact not found');
                 } else {
                     Users.getLogged().then(function(user) {
                         if(user.name === res.name) {
                             ErrorPopup.show('Error', 'Contact name can\'t be same as logged user');
                         } else {
-
+                            Users.add(res).then(function() {
+                                Talks.add({
+                                    user1: user.id,
+                                    user2: r.id
+                                }).then(function() {
+                                    $rootScope.$broadcast('tabs.talk:reload');
+                                });
+                            });
                         }
                     });
                 }
             });
         });
     };
-
-    $scope.showErrorPopup = function(title, msg) {
-        $ionicPopup.alert({
-            template: msg,
-            title: title
-        });
-    }
 
     $scope.settings = function() {
         $state.go('settings');
