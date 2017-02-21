@@ -39,8 +39,13 @@
 				return ServerDB.get('/talk?id='+ id).then(function (res) {
 					// adding talk in local db
 					//console.log(res.data)
+					res.data._id = '' + id;
 					return $q.when(db.put(res.data)).then(function(r) {
 						return res.data;
+					}).catch(function(err) {
+						if(err.name === 'conflict') {
+							return res.data;
+						}
 					});
 				});
 			});
