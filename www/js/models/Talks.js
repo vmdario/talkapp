@@ -36,7 +36,7 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 			return ServerDB.get('/talk?id='+ id).then(function (res) {
 				// adding talk in local db
 				//console.log(res.data)
-				return $q.when(db.post(res.data)).then(function(r) {
+				return $q.when(db.put(res.data)).then(function(r) {
 					return res.data;
 				});
 			});
@@ -52,14 +52,15 @@ app.service('Talks', ['ServerDB', 'Users', '$q', '$window', function(ServerDB, U
 						talks.push(t.doc);
 					});
 					return talks;
-				}
-				return ServerDB.get('/talk/user?id=' + res.id).then(function(r) {
-					r.data.forEach(function(talk) {
-						talk._id = '' + talk.id;
-						db.put(talk).then(function(){}, function(e){});
+				} else {
+					return ServerDB.get('/talk/user?id=' + res.id).then(function(r) {
+						r.data.forEach(function(talk) {
+							talk._id = '' + talk.id;
+							db.put(talk).then(function(){}, function(e){});
+						});
+						return r.data;
 					});
-					return r.data;
-				});
+				}
 			});
 		});
 	}

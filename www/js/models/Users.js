@@ -51,11 +51,17 @@ app.service('Users', ['$window', '$q', 'ServerDB', 'utils', function ($window, $
 
 	this.add = function(user) {
 		return ServerDB.post('/user/add', user).then(function(res) {
-			// fetch this user
-			return ServerDB.get('/user/name/'+ encodeURIComponent(user.name) + '/').then(function(r) {
-				var u = Object.assign(user, r.data);
-				return $q.when(db.put(u)).then(function(){}, function(){});
-			});
+			if(!res.data) {
+				// already added in server
+				console.log('User already added');
+				return ServerDB.get('/user/name/' + encodeURIComponent(user.name) + '/').then(function(r) {
+					var u = Object.assign(user, r.data);
+					return $q.when(db.put(u)).then(function(){}, function(e){ console.log(e); });
+				});
+			}
+			var u = Object.assign(user, res.data);
+			return $q.when(db.put(u)).then(function(){}, function(e){ console.log(e); });
+			
 		}, function(err) {
 			console.log(err);
 		});

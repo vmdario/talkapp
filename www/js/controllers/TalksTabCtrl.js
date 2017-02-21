@@ -47,8 +47,8 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
 
     $scope.reload();
 
-    $scope.$on('tabs.talk:reload', function(event, data) {
-        console.log('tabs.talk:reload');
+    $scope.$on('tabs:reload', function(event, data) {
+        console.log('tabs:reload');
         $scope.reload();
     });
 
