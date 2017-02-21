@@ -1,5 +1,5 @@
 
-//angular.module('app.settings', [])
+//angular.module('app', [])
 app.controller('SettingsCtrl', function ($scope) {
 
     $scope.back = function() {
