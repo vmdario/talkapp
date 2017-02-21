@@ -1,5 +1,5 @@
 
-app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, ServerDB) {
+app.service('Users', ['$window', '$q', 'ServerDB', 'utils', function ($window, $q, ServerDB, utils) {
 
 	var db = $window.PouchDB('users');
 
@@ -15,9 +15,11 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 	this.getById = function(id) {
 
 		return $q.when(db.allDocs({ startkey: id.toString(), include_docs: true })).then(function(res) {
-			if(res.total_rows === 0) {
+
+			if(res.rows.length === 0) {
 				// Get from server
 				return ServerDB.get('/user?id=' + id).then(function(r) {
+					r.data._id = '' + id + '&' + r.data.name + '&' + r.data.email;
 					return $q.when(db.put(r.data)).then(function() {
 						return r.data;
 					});
@@ -33,7 +35,7 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 			if(!r.data) {
 				return null;
 			}
-			r.data._id = r.data.id + '_' + r.data.name;
+			r.data._id = r.data.id + '&' + r.data.name + '&' + r.data.email;
 			return $q.when(db.put(r.data)).then(function(j) {
 				return r.data;
 			}, function(e) {
@@ -48,12 +50,10 @@ app.service('Users', ['$window', '$q', 'ServerDB', function ($window, $q, Server
 	}
 
 	this.add = function(user) {
-		console.log('ServerDB adding');
 		return ServerDB.post('/user/add', user).then(function(res) {
 			// fetch this user
 			return ServerDB.get('/user/name/'+ encodeURIComponent(user.name) + '/').then(function(r) {
 				var u = Object.assign(user, r.data);
-				//console.log(u);
 				return $q.when(db.put(u)).then(function(){}, function(){});
 			});
 		}, function(err) {

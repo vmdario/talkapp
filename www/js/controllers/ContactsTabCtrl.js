@@ -18,10 +18,10 @@ app.controller('ContactsTabCtrl', ['$scope', 'utils', '$state', 'NavPopover', '$
     };
 
     $scope.reloadContacts = function() {
-        Talks.getAllByLoggedUser().then(function(res) {
-            res.data.forEach(function(obj) {
+        Talks.getAllByLoggedUser().then(function(talks) {
+            $scope.contacts = [];
+            talks.forEach(function(obj) {
                 
-                $scope.contacts = [];
                 Users.getLogged().then(function(user) {
                     var contact = null;
                     if(user.id === obj.user1.id) {
@@ -41,4 +41,8 @@ app.controller('ContactsTabCtrl', ['$scope', 'utils', '$state', 'NavPopover', '$
         })
     }
     $scope.reloadContacts();
+    $scope.$on('tabs:reload', function(event, data) {
+        console.log('tabs:reload');
+        $scope.reloadContacts();
+    });
 }]);

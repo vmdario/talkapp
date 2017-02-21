@@ -40,10 +40,9 @@ app.controller("LoginCtrl", function ($scope, $ionicHistory, Users, $ionicPopup,
 	};
 
 	$scope.login = function(data) {
-		var id = IdGen.generateId();
 		Users.add({
-			_id: id + '_' + data.name + '_' + data.email + '_login',
-			id: id,
+			_id: '&' + data.name + '&' + data.email + '&login',
+			id: 0,
 			name: data.name,
 			email: data.email, 
 			password: data.password, 

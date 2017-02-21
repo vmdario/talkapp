@@ -28,5 +28,12 @@ app.service('utils', function ($log, $window) {
 	this.w = function (msg) {
 		$log.warn(JSON.stringify(msg));
 	};
+
+	this.prepareForServer = function(obj) {
+		if(obj._id) {
+			delete obj['_id'];
+		}
+		return obj;
+	}
 })
 ;

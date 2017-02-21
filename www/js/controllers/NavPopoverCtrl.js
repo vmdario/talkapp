@@ -67,12 +67,12 @@ app.factory('NavPopover', function ($ionicPopover) {
                         if(user.name === res.name) {
                             ErrorPopup.show('Error', 'Contact name can\'t be same as logged user');
                         } else {
-                            Users.add(res).then(function() {
+                            Users.add(r).then(function() {
                                 Talks.add({
                                     user1: user.id,
                                     user2: r.id
                                 }).then(function() {
-                                    $rootScope.$broadcast('tabs.talk:reload');
+                                    $rootScope.$broadcast('tabs:reload');
                                 });
                             });
                         }

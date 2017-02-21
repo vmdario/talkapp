@@ -18,11 +18,11 @@ app.controller('TalksTabCtrl', function ($scope, NavPopover, $timeout, utils, Ta
 
     $scope.reload = function() {
         LoadingPopup.show();
-        Talks.getAllByLoggedUser().then(function(res) {
+        Talks.getAllByLoggedUser().then(function(talks) {
             Users.getLogged().then(function(r) {
                 $scope.talks = [];
                 
-                res.data.forEach(function(talk) {
+                talks.forEach(function(talk) {
                     var contact = {};
                     if(talk.user1.id === r.id) {
                         contact = talk.user2;
