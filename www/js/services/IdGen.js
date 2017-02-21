@@ -1,7 +1,12 @@
-
-app.service('IdGen', [function() {
+(function() {
+	'use strict';	
 	
-	this.generateId = function() {
-		return new Date().getTime();
-	}
-}]);
+	angular.module('app')
+	.service('IdGen', [function() {
+		
+		this.generateId = function() {
+			return new Date().getTime();
+		}
+	}]);
+
+})();

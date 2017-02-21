@@ -1,8 +1,11 @@
+(function() {
+	'use strict';
+    
+    angular.module('app')
+    .controller('SettingsCtrl', function ($scope) {
 
-//angular.module('app', [])
-app.controller('SettingsCtrl', function ($scope) {
-
-    $scope.back = function() {
-        history.back();
-    }
-});
+        $scope.back = function() {
+            history.back();
+        }
+    });
+})();

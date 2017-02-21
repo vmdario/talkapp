@@ -1,16 +1,21 @@
+(function() {
+	'use strict';    
+    
+    angular.module('app')
+    .service('ErrorPopup', ['$ionicPopup', function($ionicPopup) {
 
-app.service('ErrorPopup', ['$ionicPopup', function($ionicPopup) {
+        var popup;
 
-    var popup;
+        this.show = function(title, msg) {
+            popup = $ionicPopup.alert({
+                title: title,
+                template: msg
+            });
+        }
 
-    this.show = function(title, msg) {
-        popup = $ionicPopup.alert({
-            title: title,
-            template: msg
-        });
-    }
+        this.close = function() {
+            popup.close();
+        }
+    }]);
 
-    this.close = function() {
-        popup.close();
-    }
-}]);
+})();

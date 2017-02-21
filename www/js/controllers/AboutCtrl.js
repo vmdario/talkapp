@@ -1,7 +1,11 @@
+(function() {
+    'use strict';
 
-app.controller('AboutCtrl', function ($scope, utils) {
+    angular.module('app')
+    .controller('AboutCtrl',['$scope', 'utils', function ($scope, utils) {
 
-    $scope.back = function() {
-    	history.back();
-    }
-});
+        $scope.back = function() {
+            history.back();
+        }
+    }]);
+})();

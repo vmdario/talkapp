@@ -1,10 +1,13 @@
+(function() {
+    'use strict';
 
-app.controller('ContactInfoCtrl', ['$scope', '$stateParams','Users', 
-	function ($scope, $stateParams,Users) {
+	angular.module('app')
+	.controller('ContactInfoCtrl', ['$scope', '$stateParams','Users', function ($scope, $stateParams,Users) {
 
-	$scope.contact = {};
+		$scope.contact = {};
 
-	Users.getById($stateParams.contactId).then(function(res) {
-		$scope.contact = res;
-	});
-}]);
+		Users.getById($stateParams.contactId).then(function(res) {
+			$scope.contact = res;
+		});
+	}]);
+})();
